@@ -7,6 +7,7 @@ import './styles/signup_form.css'
 import SignUpPage from "./screens/SignUp";
 import BloggerssPage from "./screens/Bloggers";
 import AdminUsers from "./screens/AdminUsers";
+import EditorJs from "./screens/CreateBlog";
 // import Navbar from "./components/Common/navbar";
 
 
@@ -37,6 +38,16 @@ function App() {
             </Route>
           </Route>
 
+          <Route element={<PrivateRoute routeRole='blogger' />}>
+            <Route path='/blogger/blogs' element={<BlogsPage />}>
+            </Route>
+          </Route>
+
+          <Route element={<PrivateRoute routeRole='blogger' />}>
+            <Route path='/blogger/create' element={<EditorJs />}>
+            </Route>
+          </Route>
+
           <Route element={<PrivateRoute routeRole='admin' />}>
             <Route path='/admin/' element={<HomePage />}>
               {/* <Route path='dashboard' element={<Dashboard />} /> */}
@@ -48,7 +59,7 @@ function App() {
           </Route>
 
           <Route element={<PrivateRoute routeRole='blogger' />}>
-            <Route path='/blogger/' element={<BlogsPage />}>
+            <Route path='/blogger/blog' element={<BlogsPage />}>
               {/* <Route path='create-blog' element={<CreateBlog />} />
               <Route path='my-blogs' element={<MyBlogs />} />
               <Route path='my-blogs/:id' element={<ViewBlog />} /> */}

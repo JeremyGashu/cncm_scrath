@@ -19,6 +19,7 @@ function useProvideAuth() {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
     const [currentRole, setCurrentRole] = useState(null)
+    const [active, setActive] = useState(true)
 
 
     const handleUser = async (rawUser) => {
@@ -31,6 +32,7 @@ function useProvideAuth() {
             if (userData.exists && userData.data()) {
 
                 setCurrentRole(userData.data()['role'])
+                setActive(userData.data()['active'])
             }
             else {
 
@@ -118,6 +120,7 @@ function useProvideAuth() {
         user,
         loading,
         currentRole,
+        active,
         loginManually,
         registerUserManually,
         signinWithGitHub,

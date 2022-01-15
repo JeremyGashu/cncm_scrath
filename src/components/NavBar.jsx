@@ -26,8 +26,8 @@ const Navbar = () => {
         { name: "Bloggers", to: "/admin/bloggers", icon: <CreateIcon /> },
     ];
     const settingsBloggers = [
-        { name: "Create Blog", to: "/blogger/create-blog", icon: <CreateIcon /> },
-        { name: "My Blogs", to: "/blogger/my-blogs", icon: <ChromeReaderModeIcon /> },
+        { name: "Create Blog", to: "/blogger/create", icon: <CreateIcon /> },
+        { name: "My Blogs", to: "/blogger/blogs", icon: <ChromeReaderModeIcon /> },
     ];
 
 
