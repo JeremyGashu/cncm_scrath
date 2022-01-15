@@ -1,12 +1,17 @@
+import { SnackbarProvider } from 'notistack';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
+import { AuthProvider } from './hooks/auth';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <AuthProvider>
+      <SnackbarProvider>
+        <App />
+      </SnackbarProvider>
+    </AuthProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

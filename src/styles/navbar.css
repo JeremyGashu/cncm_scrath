@@ -1,0 +1,39 @@
+body {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+ul.nav {
+    margin:0;
+    padding:0;
+    list-style:none;
+    height:60px; line-height:36px;
+    background:whitesmoke; /* you can change the backgorund color here. */
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:13px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+ul.nav li {
+    float:left;
+}
+ul.nav a {
+    display:block;
+    padding:0 28px;
+    color:#444;
+    text-decoration:none;
+}
+ul.nav a:hover,
+ul.nav li.current a {
+    /* background:grey; */
+    color: black;
+}
+
+.logo {
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+
+}
