@@ -38,10 +38,12 @@ const SignUpPage = () => {
         let password = data.get('password')
         if (!validateEmail(email)) {
             enqueueSnackbar('Please enter valid email address!', { variant: 'error' })
+            setLoading(false)
             return;
         }
         if (!validatePassword(password)) {
             enqueueSnackbar('Password must be at least 8 characters!', { variant: 'error' })
+            setLoading(false)
             return;
         }
         let status = await registerUserManually(email, password)
@@ -54,6 +56,7 @@ const SignUpPage = () => {
             setLoading(false)
             enqueueSnackbar(status.message, { variant: 'error' })
         }
+        
     };
 
     const {

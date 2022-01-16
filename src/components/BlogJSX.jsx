@@ -1,4 +1,3 @@
-import { FC } from "react";
 import {
     Typography,
     Box,
@@ -104,6 +103,7 @@ const BlogJSX = ({ jsxBlog }) => {
                         </Box>
                     );
                 } else if (block.type === "table") {
+                    console.log(block);
                     return (
                         <Table>
                             <TableHead>

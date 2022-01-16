@@ -4,11 +4,12 @@ import BlogsPage from "./screens/Blogs";
 import HomePage from "./screens/HomePage";
 import LoginPage from "./screens/Login";
 import './styles/signup_form.css'
+import './styles/blog_card.css'
 import SignUpPage from "./screens/SignUp";
 import BloggerssPage from "./screens/Bloggers";
 import AdminUsers from "./screens/AdminUsers";
-import EditorJs from "./screens/CreateBlog";
-// import Navbar from "./components/Common/navbar";
+import EditorJs from "./screens/EditorPage";
+import BloggerDetail from "./screens/BlogDetail";
 
 
 function App() {
@@ -19,7 +20,7 @@ function App() {
           {/* <Navbar /> */}
           <Route path='/' element={<HomePage />} />
           <Route path='blogs' element={<BlogsPage />} />
-          <Route path='blogs/:id' element={<BlogsPage />} />
+          <Route path='blogs/:id' element={<BloggerDetail />} />
           <Route path='login' element={<LoginPage />} />
           <Route path='register' element={<SignUpPage />} />
 

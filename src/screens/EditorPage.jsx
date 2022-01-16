@@ -3,15 +3,9 @@ import React, { useState, useRef, useEffect } from "react";
 import EditorJS from "react-editor-js";
 import { Editor_JS_TOOLS } from "../utils/tools.js";
 import {
-    collection,
-    addDoc,
     serverTimestamp,
-    setDoc,
-    query,
-    where,
-    doc,
-    onSnapshot,
 } from "firebase/firestore";
+
 import { useDropzone } from "react-dropzone";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
@@ -29,38 +23,41 @@ import CircularProgress, {
 } from "@mui/material/CircularProgress";
 import moment from "moment";
 import { useSnackbar } from "notistack";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import FullPageLoading from "../components/FullPageLoading";
 import { useAuth } from "../hooks/auth";
-import { database, storage } from "../firebase.js";
+import { storage } from "../firebase.js";
 import BlogJSX from "../components/BlogJSX.jsx";
+import { readTime } from "../utils/read_time.js";
+import { addBlogData } from "../utils/firebase/blog_management.js";
+import { useNavigate } from "react-router-dom";
 
-const CircularProgressWithLabel = (props
-) => {
-    return (
-        <Box sx={{ position: "relative", display: "inline-flex" }}>
-            <CircularProgress variant='determinate' {...props} />
-            <Box
-                sx={{
-                    top: 0,
-                    left: 0,
-                    bottom: 0,
-                    right: 0,
-                    position: "absolute",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}
-            >
-                <Typography
-                    variant='caption'
-                    component='div'
-                    color='text.secondary'
-                >{`${Math.round(props.value)}%`}</Typography>
-            </Box>
-        </Box>
-    );
-}
+// const CircularProgressWithLabel = (props
+// ) => {
+//     return (
+//         <Box sx={{ position: "relative", display: "inline-flex" }}>
+//             <CircularProgress variant='determinate' {...props} />
+//             <Box
+//                 sx={{
+//                     top: 0,
+//                     left: 0,
+//                     bottom: 0,
+//                     right: 0,
+//                     position: "absolute",
+//                     display: "flex",
+//                     alignItems: "center",
+//                     justifyContent: "center",
+//                 }}
+//             >
+//                 <Typography
+//                     variant='caption'
+//                     component='div'
+//                     color='text.secondary'
+//                 >{`${Math.round(props.value)}%`}</Typography>
+//             </Box>
+//         </Box>
+//     );
+// }
 
 
 
@@ -71,21 +68,21 @@ const EditorJs = () => {
     const [imagePreview, setImagePreview] = useState([]);
     const [imageAsUrl, setImageAsUrl] = useState("");
     const [imageUploading, setImageUploading] = useState(false);
-    const [progress, setProgress] = useState(0);
+    // const [progress, setProgress] = useState(0);
     const [loading, setLoading] = useState(false);
-    const [admins, setAdmins] = useState();
-    const [currentuser, setuser] = useState();
+    // const [admins, setAdmins] = useState();
     const [open, setOpen] = useState(false);
 
     const { user, active } = useAuth()
+    const navigate = useNavigate()
 
 
 
     const { enqueueSnackbar } = useSnackbar();
     const instanceRef = useRef();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
-    const userRef = doc(database, "users", `${user.uid}`);
+    // const userRef = doc(database, "users", `${user.uid}`);
 
     const handleOpen = async () => {
         const savedData = await instanceRef.current.save();
@@ -125,8 +122,8 @@ const EditorJs = () => {
             uploadTask.on(
                 "state_changed",
                 (snapshot) => {
-                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    setProgress(progress);
+                    // const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    // setProgress(progress);
                 },
                 (error) => {
                     console.log(error);
@@ -143,29 +140,7 @@ const EditorJs = () => {
         }
     }, [imageAsFile]);
 
-    const readTime = (block) => {
-        let paragraph = "";
 
-        // eslint-disable-next-line array-callback-return
-        block.map((block) => {
-            switch (block.type) {
-                case "paragraph":
-                    paragraph = paragraph + block.data.text;
-                    break;
-                default:
-                    break;
-            }
-        });
-
-        // average wordper minute reading time
-        const averageWPM = 225;
-        // counts all words in the paragrah
-        const wordsCount = paragraph.trim().split(/\s+/).length;
-        // calcualte the read time for words
-        const time = Math.ceil(wordsCount / averageWPM);
-        // returns time and paragraph
-        return { time, paragraph };
-    };
 
     const handleSave = async () => {
         console.log(user)
@@ -174,7 +149,6 @@ const EditorJs = () => {
         const { time, paragraph } = readTime(savedData.blocks);
         if (blogTitle && savedData && imageAsUrl && paragraph) {
             setLoading(true);
-            const blogsDescriptionRef = collection(database, "blogsDescription");
 
             const blogDescription = {
                 title: blogTitle,
@@ -187,39 +161,18 @@ const EditorJs = () => {
                 bloggerId: user.uid,
                 bloggerImage: user.image || '',
                 deleted: false,
-                status: false,
+                active: false,
                 createdAt: serverTimestamp(),
             };
             if (user && active === true) {
-                await addDoc(blogsDescriptionRef, blogDescription).then((res) => {
-                    const blogMeta = {
-                        id: res.id,
-                        // blockData: savedData.blocks,
-                        blockData: JSON.stringify(savedData.blocks),
+                let success = await addBlogData(blogDescription, savedData)
 
-                        likes: [],
-                        createdAt: serverTimestamp(),
-                    };
-                    setDoc(doc(database, "blogsMeta", res.id), blogMeta);
-                });
-
-                if (user && savedData && admins) {
+                if (user && savedData && success) {
                     enqueueSnackbar(`${blogTitle} Saved successfully`, {
                         variant: "success",
                     });
-
-                    // eslint-disable-next-line array-callback-return
-                    await admins.map((admin) => {
-                        console.log('admin', admin)
-                        // createNotification(
-                        //     "newBlog",
-                        //     currentuser.user,
-                        //     admin.id && admin.id,
-                        //     `${currentUser.displayName} has published a new blog`
-                        // );
-                    });
                     setLoading(false);
-                    // navigate("/blogger/my");
+                    navigate("/blogger/blogs");
                 }
             } else {
                 enqueueSnackbar(
@@ -254,17 +207,17 @@ const EditorJs = () => {
 
     useEffect(() => {
         console.log('rendering')
-        onSnapshot(userRef, (doc) => {
-            setuser(doc.data());
-        });
-        onSnapshot(
-            query(collection(database, "users"), where("role", "==", "admin")),
-            (snapshot) => {
-                setAdmins(snapshot.docs.map(doc => ({
-                    id: doc.id
-                })));
-            }
-        );
+        // onSnapshot(userRef, (doc) => {
+        //     setuser(doc.data());
+        // });
+        // onSnapshot(
+        //     query(collection(database, "users"), where("role", "==", "admin")),
+        //     (snapshot) => {
+        //         setAdmins(snapshot.docs.map(doc => ({
+        //             id: doc.id
+        //         })));
+        //     }
+        // );
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user]);
 
@@ -279,7 +232,7 @@ const EditorJs = () => {
                     alignItems={"center"}
                 >
                     <Typography>{moment().format("MMMM Do YYYY, h:mm:ss a")}</Typography>
-                    <Button onClick={() => handleOpen()} variant='contained'>
+                    <Button onClick={() => handleOpen()} >
                         preview
                     </Button>
                 </Stack>
@@ -353,7 +306,7 @@ const EditorJs = () => {
                                     onClick={() => {
                                         setImageAsUrl("");
                                         setImageAsFile([]);
-                                        setProgress(0);
+                                        // setProgress(0);
                                     }}
                                 >
                                     Remove Image
@@ -366,7 +319,7 @@ const EditorJs = () => {
                                     onClick={() => {
                                         setImageAsUrl("");
                                         setImageAsFile([]);
-                                        setProgress(0);
+                                        // setProgress(0);
                                     }}
                                 >
                                     Remove Image
@@ -409,7 +362,6 @@ const EditorJs = () => {
                             </Button>
                             <Button
                                 size='large'
-                                variant='contained'
                                 disabled={loading}
                                 sx={{ width: "20%" }}
                                 onClick={() => handleSave()}
