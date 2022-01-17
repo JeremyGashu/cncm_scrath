@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, GithubAuthProvider, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth'
+import { createUserWithEmailAndPassword, GoogleAuthProvider, signInAnonymously, signInWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth'
 import React, { useState, useEffect, useContext, createContext } from 'react'
 import { auth } from '../firebase'
 import { authState } from 'rxfire/auth'
@@ -44,19 +44,21 @@ function useProvideAuth() {
 
             return user
         } else {
+            // await signInAnonymously()
             setLoading(false)
             setUser(false)
             return false
         }
     }
 
-    const signinWithGitHub = () => {
+    const loginAnonymously = () => {
+        return signInAnonymously()
+    }
+
+    const signInWithGoogle = () => {
 
         setLoading(true)
-        return signInWithPopup(auth, new GithubAuthProvider())
-            .then((response) => {
-                console.log(response.user)
-            })
+        return signInWithPopup(auth, new GoogleAuthProvider())
     }
 
     const registerUserManually = async (email, password) => {
@@ -67,7 +69,6 @@ function useProvideAuth() {
         }
         return createUserWithEmailAndPassword(auth, email, password)
             .then((response) => {
-                handleUser(response.user)
                 return { success: true }
             }).catch(e => {
                 return { success: false, message: 'Error creating user. Please try Again!' }
@@ -75,10 +76,10 @@ function useProvideAuth() {
     }
 
     const loginManually = async (email, password) => {
+        setLoading(true)
         return signInWithEmailAndPassword(auth, email, password)
             .then((response) => {
                 if (response.user) {
-                    handleUser(response.user)
                     return { success: true }
                 }
                 else {
@@ -86,7 +87,7 @@ function useProvideAuth() {
                 }
 
             }).catch(e => {
-                if (e.code = 'auth/user-not-found') {
+                if (e.code === 'auth/user-not-found') {
                     return { success: false, message: 'Incorrect username or password!' }
                 }
                 else {
@@ -94,12 +95,6 @@ function useProvideAuth() {
                     return { success: false, message: 'Error signing in. Please try Again!' }
                 }
             })
-    }
-
-    const signInWithGoogle = () => {
-
-        setLoading(true)
-        return signInWithPopup(auth, new GoogleAuthProvider())
     }
 
 
@@ -121,9 +116,9 @@ function useProvideAuth() {
         loading,
         currentRole,
         active,
+        loginAnonymously,
         loginManually,
         registerUserManually,
-        signinWithGitHub,
         signInWithGoogle,
         signout,
     }

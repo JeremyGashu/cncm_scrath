@@ -6,10 +6,11 @@ import LoginPage from "./screens/Login";
 import './styles/signup_form.css'
 import './styles/blog_card.css'
 import SignUpPage from "./screens/SignUp";
-import BloggerssPage from "./screens/Bloggers";
 import AdminUsers from "./screens/AdminUsers";
 import EditorJs from "./screens/EditorPage";
 import BloggerDetail from "./screens/BlogDetail";
+import MyBLogs from "./screens/MyBlogs";
+import AdminBlogs from "./screens/AdminBlogs";
 
 
 function App() {
@@ -25,14 +26,14 @@ function App() {
           <Route path='register' element={<SignUpPage />} />
 
           <Route element={<PrivateRoute routeRole='admin' />}>
-            <Route path='/admin/blogs' element={<BlogsPage />}>
+            <Route path='/admin/blogs' element={<AdminBlogs />}>
             </Route>
           </Route>
 
-          <Route element={<PrivateRoute routeRole='admin' />}>
+          {/* <Route element={<PrivateRoute routeRole='admin' />}>
             <Route path='/admin/bloggers' element={<BloggerssPage />}>
             </Route>
-          </Route>
+          </Route> */}
 
           <Route element={<PrivateRoute routeRole='admin' />}>
             <Route path='/admin/users' element={<AdminUsers />}>
@@ -40,7 +41,7 @@ function App() {
           </Route>
 
           <Route element={<PrivateRoute routeRole='blogger' />}>
-            <Route path='/blogger/blogs' element={<BlogsPage />}>
+            <Route path='/blogger/blogs' element={<MyBLogs />}>
             </Route>
           </Route>
 

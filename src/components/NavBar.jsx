@@ -4,30 +4,27 @@ import {
     Button,
     Container,
 
-    MenuItem,
     Skeleton,
     Toolbar,
     Typography,
 } from "@mui/material";
 import ChromeReaderModeIcon from "@mui/icons-material/ChromeReaderMode";
-import CreateIcon from "@mui/icons-material/Create";
-import { Link as RouterLink, Outlet } from "react-router-dom";
+import { Link as RouterLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/auth";
 import { PersonOutline } from "@mui/icons-material";
+import { useSnackbar } from 'notistack'
 
 const Navbar = () => {
-    const { signout, user, currentRole, loading } = useAuth();
+    const { signout, user, currentRole, loading, active } = useAuth();
+    const { enqueueSnackbar } = useSnackbar()
+    const navigate = useNavigate()
 
 
     const setttingsAdmin = [
         // { name: "Dashboard", to: "/admin/dashboard", icon: <DashboardIcon /> },
         { name: "Admin Blogs", to: "/admin/blogs", icon: <ChromeReaderModeIcon /> },
         { name: "Users", to: "/admin/users", icon: <PersonOutline /> },
-        { name: "Bloggers", to: "/admin/bloggers", icon: <CreateIcon /> },
-    ];
-    const settingsBloggers = [
-        { name: "Create Blog", to: "/blogger/create", icon: <CreateIcon /> },
-        { name: "My Blogs", to: "/blogger/blogs", icon: <ChromeReaderModeIcon /> },
+        // { name: "Bloggers", to: "/admin/bloggers", icon: <CreateIcon /> },
     ];
 
 
@@ -66,30 +63,36 @@ const Navbar = () => {
                         <>
 
                             {currentRole === 'admin' && setttingsAdmin.map((setting) => (
-                                <MenuItem
-                                    key={setting.name}
-                                    component={RouterLink}
-                                    to={setting.to}
-                                >
-                                    <Button startIcon={setting.icon} sx={{ color: "black" }}>
-                                        {setting.name}
-                                    </Button>
-                                </MenuItem>
+                                <Button component={RouterLink} to={setting.to} sx={{ color: "black" }}>
+                                    {setting.name}
+                                </Button>
                             ))}
 
+                            {currentRole === 'blogger' &&
+                                <>
+                                    <Box>
+                                        <Button onClick={() => {
+                                            if (active) {
+                                                navigate('/blogger/create');
+                                            }
+                                            else {
+                                                enqueueSnackbar('Cannot create blogs. You are suspended temporarily!', { variant: 'warning' });
+                                            }
+                                        }} sx={{ color: "black" }}>
+                                            Create Blog
+                                        </Button>
+                                    </Box>
 
-                            {currentRole === 'blogger' && settingsBloggers.map((setting) => (
-                                <MenuItem
-                                    key={setting.name}
-                                    component={RouterLink}
-                                    to={setting.to}
-                                >
-                                    <Button
-                                        startIcon={setting.icon} sx={{ color: "black" }}>
-                                        {setting.name}
-                                    </Button>
-                                </MenuItem>
-                            ))}
+                                    <Box>
+                                        <Button onClick={() => {
+                                            navigate('/blogger/blogs');
+
+                                        }} sx={{ color: "black" }}>
+                                            My Blogs
+                                        </Button>
+                                    </Box>
+                                </>
+                            }
 
 
                             <Box sx={{ flexGrow: 0, justifyContent: 'space-around', alignItems: 'center' }}>
@@ -106,9 +109,9 @@ const Navbar = () => {
                         </>
                     ) : (
                         <>
-                            <Button component={RouterLink} to='/blogs'>
+                            {/* <Button component={RouterLink} to='/blogs'>
                                 BLOGS
-                            </Button>
+                            </Button> */}
                             <Box sx={{ width: 30 }} ></Box>
                             <Button component={RouterLink} color='primary' to='/login'>
                                 Login

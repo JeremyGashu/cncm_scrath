@@ -10,7 +10,7 @@ import { FavoriteBorderOutlined, CommentSharp, FavoriteOutlined } from '@mui/ico
 import Navbar from '../components/NavBar'
 import { useAuth } from '../hooks/auth'
 import { useSnackbar } from 'notistack'
-import { addCommentToBlog, likeBlog } from '../utils/firebase/blog_management'
+import { addCommentToBlog, likeBlog, updateViewData } from '../utils/firebase/blog_management'
 const BloggerDetail = () => {
 
     const params = useParams()
@@ -20,7 +20,6 @@ const BloggerDetail = () => {
     const { user, active } = useAuth()
     const { enqueueSnackbar } = useSnackbar();
 
-
     useEffect(() => {
         setLoading(true)
         docData(singlePublishedBlogQuery(params.id), { idField: 'id' })
@@ -29,13 +28,33 @@ const BloggerDetail = () => {
                 setBlog(blog)
                 setLoading(false)
             })
+
+        incrementViewData()
+
+
         return () => {
 
         }
     }, [params])
 
+    const incrementViewData = () => {
+        if (user) {
+            console.log('checking if i can update')
+            updateViewData(user.uid, params.id).then(val => {
+                console.log(val)
+            })
+        }
+        else {
+            console.log('Why i am not running')
+        }
+    }
+
     const handleCommentButtonClick = async () => {
-        if(commentText === '') return
+        if (!user) {
+            enqueueSnackbar('Please first Login to interact with Blogs!', { variant: 'warning' })
+            return
+        }
+        if (commentText === '') return
         let comment = {
             blogId: params.id || '',
             comment: commentText || '',
@@ -58,11 +77,9 @@ const BloggerDetail = () => {
             {loading && <FullPageLoading />}
 
             {!loading && blog && <Box sx={{ px: 20 }}>
-                <Typography>
-                    <Typography variant='h2' >{blog.title}</Typography>
-                    <Typography>{blog.blogger}</Typography>
-                    <Typography sx={{ fontSize: 11 }}>{moment(blog.createdAt.toDate()).fromNow()}</Typography>
-                </Typography>
+                <Typography variant='h2' >{blog.title}</Typography>
+                <Typography>{blog.blogger}</Typography>
+                <Typography sx={{ fontSize: 11 }}>{moment(blog.createdAt.toDate()).fromNow()}</Typography>
             </Box>}
 
             {!loading && blog && <>
@@ -78,22 +95,26 @@ const BloggerDetail = () => {
 
                     <Grid container direction='row' gap={3}>
                         <Grid onClick={() => {
-                            if (!blog.likes.includes(user.uid)) {
-                                likeBlog(user.uid, blog.id)
-                            }
-                            else {
-                                enqueueSnackbar('Already Liked Blog!!', { variant: 'warning' })
-                                return
-                            }
-                            if (!active) {
-                                enqueueSnackbar('Cannot Interact to Blogs you are suspended!', { variant: 'warning' })
+                            if (!user) {
+                                enqueueSnackbar('Please first Login to interact with Blogs!', { variant: 'warning' })
                                 return
                             }
                             if (user.uid === blog.bloggerId) {
                                 enqueueSnackbar('Cannot Like your own Blog!', { variant: 'warning' })
                                 return
                             }
+                            if (!active) {
+                                enqueueSnackbar('Cannot Interact to Blogs you are suspended!', { variant: 'warning' })
+                                return
+                            }
+                            if (!blog.likes.includes(user.uid)) {
+                                likeBlog(user.uid, blog.id)
+                            }
 
+                            else {
+                                enqueueSnackbar('Already Liked Blog!!', { variant: 'warning' })
+                                return
+                            }
                         }} item>
                             {blog.likes && blog.likes.includes(user.uid) ? <FavoriteOutlined sx={{ cursor: 'pointer' }} color={'#444'} /> : <FavoriteBorderOutlined sx={{ cursor: 'pointer' }} color={'#444'} />}
                         </Grid>
@@ -142,7 +163,7 @@ const BloggerDetail = () => {
                                     <Avatar alt="Example" />
                                 </Grid>
                                 <Grid justifyContent="left" item xs zeroMinWidth>
-                                    <Typography variant='h6' style={{ margin: 0, textAlign: "left", fontSize : 12 }}>{comment.username}</Typography>
+                                    <Typography variant='h6' style={{ margin: 0, textAlign: "left", fontSize: 12 }}>{comment.username}</Typography>
                                     <Typography variant='p' style={{ textAlign: "left" }}>
                                         {comment.comment}
                                     </Typography>

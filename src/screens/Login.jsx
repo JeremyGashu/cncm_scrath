@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,7 +14,7 @@ import { Google } from '@mui/icons-material';
 import { useAuth } from '../hooks/auth';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { validateEmail, validatePassword } from '../utils/validate';
-import {useSnackbar} from 'notistack'
+import { useSnackbar } from 'notistack'
 
 
 const theme = createTheme();
@@ -35,23 +35,26 @@ const LoginPage = () => {
         let email = data.get('email')
         let password = data.get('password')
         if (!validateEmail(email)) {
+            setLoading(false)
             enqueueSnackbar('Please enter valid email address!', { variant: 'error' })
             return;
         }
         if (!validatePassword(password)) {
+            setLoading(false)
             enqueueSnackbar('Password must be at least 8 characters!', { variant: 'error' })
             return;
         }
         let status = await loginManually(email, password)
         if (status.success) {
             setLoading(false)
-            enqueueSnackbar('Registered Successfully!', { variant: 'success' })
+            // enqueueSnackbar('Registered Successfully!', { variant: 'success' })
             navigate('/')
         }
         else {
             setLoading(false)
             enqueueSnackbar(status.message, { variant: 'error' })
         }
+        setLoading(false)
     };
 
     const {

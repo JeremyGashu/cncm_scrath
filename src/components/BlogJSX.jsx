@@ -128,7 +128,7 @@ const BlogJSX = ({ jsxBlog }) => {
                             component={Typography}
                             paragraph
                             dangerouslySetInnerHTML={{ __html: `${block.data.text}` }}
-                            sx={{ fontSize: "20px", fontWeight: "400", letterSpacing: "0.5px" }}
+                            sx={{ fontSize: "15px", fontWeight: "400", letterSpacing: "0.5px" }}
                         />
                     );
                 } else if (block.type === "delimiter") {

@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, query, setDoc, where } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore";
 import { database } from "../../firebase";
 
 
@@ -27,8 +27,32 @@ const userRegistered = async (email) => {
     return userData.size > 0
 }
 
+const suspendUser = (id) => {
+    const userRef = doc(database, 'users', id)
+    updateDoc(userRef, { active: false })
+}
+
+const activateUser = (id) => {
+    const userRef = doc(database, 'users', id)
+    updateDoc(userRef, { active: true })
+}
+
+const revokeBloggerRole = (id) => {
+    const userRef = doc(database, 'users', id)
+    updateDoc(userRef, { role: 'user' })
+}
+
+const grantBloggerRole = (id) => {
+    const userRef = doc(database, 'users', id)
+    updateDoc(userRef, { role: 'blogger' })
+}
+
 export {
     getUserByUserId,
     addUserToDatabase,
-    userRegistered
+    userRegistered,
+    suspendUser,
+    activateUser,
+    grantBloggerRole,
+    revokeBloggerRole
 }

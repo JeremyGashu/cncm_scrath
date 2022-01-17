@@ -155,8 +155,6 @@ const EditorJs = () => {
                 coverImage: imageAsUrl,
                 description: paragraph.slice(0, 200),
                 readTime: time,
-                numLikes: 0,
-                numComments: 0,
                 blogger: user.name,
                 bloggerId: user.uid,
                 bloggerImage: user.image || '',
