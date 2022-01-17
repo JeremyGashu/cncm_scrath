@@ -80,11 +80,11 @@ export const Editor_JS_TOOLS = {
     },
     list: List,
     qoute: Quote,
-    linkTool: {
-        class: Link,
-        inlineToolbar: true,
-    },
-    table: Table,
+    // linkTool: {
+    //     class: Link,
+    //     inlineToolbar: true,
+    // },
+    // table: Table,
     underline: Underline,
     personality: {
         class: Personality,

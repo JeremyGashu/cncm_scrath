@@ -58,8 +58,8 @@ const LoginPage = () => {
     };
 
     const {
-        signInWithGoogle, user } = useAuth()
-    if (user) {
+        signInWithGoogle, user, isAnonymous } = useAuth()
+    if (user && !isAnonymous) {
         return <Navigate to='/' />
     }
 

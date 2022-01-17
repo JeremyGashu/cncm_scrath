@@ -15,7 +15,7 @@ import { PersonOutline } from "@mui/icons-material";
 import { useSnackbar } from 'notistack'
 
 const Navbar = () => {
-    const { signout, user, currentRole, loading, active } = useAuth();
+    const { signout, user, currentRole, loading, active, isAnonymous } = useAuth();
     const { enqueueSnackbar } = useSnackbar()
     const navigate = useNavigate()
 
@@ -66,46 +66,67 @@ const Navbar = () => {
                                 <Button component={RouterLink} to={setting.to} sx={{ color: "black" }}>
                                     {setting.name}
                                 </Button>
+
+
                             ))}
+
+
+
+
 
                             {currentRole === 'blogger' &&
                                 <>
-                                    <Box>
-                                        <Button onClick={() => {
-                                            if (active) {
-                                                navigate('/blogger/create');
-                                            }
-                                            else {
-                                                enqueueSnackbar('Cannot create blogs. You are suspended temporarily!', { variant: 'warning' });
-                                            }
-                                        }} sx={{ color: "black" }}>
-                                            Create Blog
-                                        </Button>
-                                    </Box>
+                                    <Button onClick={() => {
+                                        if (active) {
+                                            navigate('/blogger/create');
+                                        }
+                                        else {
+                                            enqueueSnackbar('Cannot create blogs. You are suspended temporarily!', { variant: 'warning' });
+                                        }
+                                    }} sx={{ color: "black" }}>
+                                        Create Blog
+                                    </Button>
 
-                                    <Box>
-                                        <Button onClick={() => {
-                                            navigate('/blogger/blogs');
+                                    <Button onClick={() => {
+                                        navigate('/blogger/blogs');
 
-                                        }} sx={{ color: "black" }}>
-                                            My Blogs
-                                        </Button>
-                                    </Box>
+                                    }} sx={{ color: "black" }}>
+                                        My Blogs
+                                    </Button>
+
                                 </>
                             }
 
+                            {
+                                (currentRole === 'admin' || currentRole === 'blogger') &&
+                                <Button onClick={() => {
+                                    signout()
 
-                            <Box sx={{ flexGrow: 0, justifyContent: 'space-around', alignItems: 'center' }}>
-                                <Avatar />
-                            </Box>
+                                }} sx={{ color: "black" }}>
+                                    Log Out
+                                </Button>
+                            }
 
-                            <Box sx={{ flexGrow: 0, justifyContent: 'space-around', alignItems: 'center', margin: 2 }}>
-                                <Typography fontSize={12} >{user.name}</Typography>
-                            </Box>
+                            {isAnonymous &&
+                                <>
+                                    <Box sx={{ flexGrow: 0, justifyContent: 'space-around', alignItems: 'center' }}>
+                                        <Avatar />
+                                    </Box>
 
-                            <Button onClick={() => {
-                                signout()
-                            }} >Log Out</Button>
+                                    <Box sx={{ flexGrow: 0, justifyContent: 'space-around', alignItems: 'center', margin: 2 }}>
+                                        <Typography fontSize={12} >{user.name}</Typography>
+                                    </Box>
+
+                                    <Button component={RouterLink} color='primary' to='/login'>
+                                        Login
+                                    </Button>
+
+                                    <Button component={RouterLink} color='primary' to='/register'>
+                                        Register
+                                    </Button>
+                                </>
+                            }
+
                         </>
                     ) : (
                         <>

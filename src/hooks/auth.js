@@ -20,39 +20,49 @@ function useProvideAuth() {
     const [loading, setLoading] = useState(true)
     const [currentRole, setCurrentRole] = useState(null)
     const [active, setActive] = useState(true)
+    const [isAnonymous, setIsAnonymous] = useState()
 
 
     const handleUser = async (rawUser) => {
         if (rawUser) {
-            const user = formatUser(rawUser)
-            const userData = await getUserByUserId(user.uid)
-
-            console.log(user)
-            setUser(user)
-            if (userData.exists && userData.data()) {
-
-                setCurrentRole(userData.data()['role'])
-                setActive(userData.data()['active'])
+            if (rawUser.isAnonymous) {
+                setActive(false)
+                setIsAnonymous(true)
+                setCurrentRole('anonymous')
+                let user = { uid: rawUser.uid, name: 'Anonymous', email: '', role: 'anonymous', active: true, image: '' }
+                await addUserToDatabase(user)
+                setUser(user)
             }
             else {
+                setIsAnonymous(false)
 
-                let success = await addUserToDatabase({ uid: user.uid, name: user.name, email: user.email, role: 'user', active: true, image: user.photoUrl })
-                console.log(success)
-                setCurrentRole('user')
+                const user = formatUser(rawUser)
+                const userData = await getUserByUserId(user.uid)
+
+                console.log(user)
+                setUser(user)
+                if (userData.exists && userData.data()) {
+
+                    setCurrentRole(userData.data()['role'])
+                    setActive(userData.data()['active'])
+                }
+                else {
+
+                    let success = await addUserToDatabase({ uid: user.uid, name: user.name, email: user.email, role: 'user', active: true, image: user.photoUrl })
+                    console.log(success)
+                    setCurrentRole('user')
+                }
             }
             setLoading(false)
-
             return user
         } else {
-            // await signInAnonymously()
-            setLoading(false)
-            setUser(false)
+            await signInAnonymously(auth)
             return false
         }
     }
 
     const loginAnonymously = () => {
-        return signInAnonymously()
+        return signInAnonymously(auth)
     }
 
     const signInWithGoogle = () => {
@@ -116,6 +126,7 @@ function useProvideAuth() {
         loading,
         currentRole,
         active,
+        isAnonymous,
         loginAnonymously,
         loginManually,
         registerUserManually,
