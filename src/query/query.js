@@ -22,7 +22,7 @@ export const unPublishedBlogsQuery = query(
 
 export const usersAndBloggserQuery = () => query(
     collection(database, 'users'),
-    where('role', '!=', 'admin')
+    where('role', 'not-in', ['admin', 'anonymous']),
 )
 
 
