@@ -98,13 +98,21 @@ const Navbar = () => {
                             }
 
                             {
-                                (currentRole === 'admin' || currentRole === 'blogger') &&
+                                (currentRole === 'admin' || currentRole === 'blogger' || currentRole === 'user') &&
                                 <Button onClick={() => {
                                     signout()
 
                                 }} sx={{ color: "black" }}>
                                     Log Out
                                 </Button>
+                            }
+
+                            {
+                                currentRole === 'user' &&
+                                <>
+                                    <Avatar />
+                                    <Typography>{user.name}</Typography>
+                                </>
                             }
 
                             {isAnonymous &&

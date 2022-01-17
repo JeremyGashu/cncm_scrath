@@ -16,10 +16,10 @@ export const useAuth = () => {
 }
 
 function useProvideAuth() {
-    const [user, setUser] = useState(null)
-    const [loading, setLoading] = useState(true)
-    const [currentRole, setCurrentRole] = useState(null)
-    const [active, setActive] = useState(true)
+    const [user, setUser] = useState()
+    const [loading, setLoading] = useState()
+    const [currentRole, setCurrentRole] = useState()
+    const [active, setActive] = useState()
     const [isAnonymous, setIsAnonymous] = useState()
 
 
@@ -109,7 +109,8 @@ function useProvideAuth() {
 
 
     const signout = async () => {
-        console.log(user)
+        
+        setCurrentRole('')
         await signOut(auth)
         console.log(user)
     }

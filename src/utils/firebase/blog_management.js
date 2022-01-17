@@ -16,6 +16,7 @@ export const addBlogData = async (blogDescription, savedData) => {
             commentsCount: 0,
             likesCount: 0,
             viewsCount: 0,
+            title : blogDescription.title || '',
             coverImage: blogDescription.coverImage || '',
             bloggerId: blogDescription.bloggerId || '',
             blogger: blogDescription.blogger

@@ -6,7 +6,7 @@ import jsonToJSX from '../utils/json_to_jsx'
 import FullPageLoading from '../components/FullPageLoading'
 import { Box, Typography, Grid, Paper, Avatar, FormControl, Input, InputLabel, Button } from '@mui/material'
 import moment from 'moment'
-import { FavoriteBorderOutlined, CommentSharp, FavoriteOutlined } from '@mui/icons-material'
+import { FavoriteBorderOutlined, CommentSharp, FavoriteOutlined, ViewArrayOutlined, VisibilityOutlined } from '@mui/icons-material'
 import Navbar from '../components/NavBar'
 import { useAuth } from '../hooks/auth'
 import { useSnackbar } from 'notistack'
@@ -16,17 +16,17 @@ const BloggerDetail = () => {
     const params = useParams()
     const [blog, setBlog] = useState()
     const [commentText, setCommentText] = useState('')
-    const [loading, setLoading] = useState(false)
-    const { user, active } = useAuth()
+    const [loadingBlog, setLoadingBlog] = useState(false)
+    const { user, active, loading, isAnonymous } = useAuth()
     const { enqueueSnackbar } = useSnackbar();
 
     useEffect(() => {
-        setLoading(true)
+        setLoadingBlog(true)
         docData(singlePublishedBlogQuery(params.id), { idField: 'id' })
             .subscribe(blog => {
                 console.log(blog)
                 setBlog(blog)
-                setLoading(false)
+                setLoadingBlog(false)
             })
 
         incrementViewData()
@@ -51,7 +51,11 @@ const BloggerDetail = () => {
 
     const handleCommentButtonClick = async () => {
         if (!user) {
-            enqueueSnackbar('Please first Login to interact with Blogs!', { variant: 'warning' })
+            enqueueSnackbar('Please Login to give Feedback!', { variant: 'warning' })
+            return
+        }
+        if (isAnonymous) {
+            enqueueSnackbar('Please Login to give Feedback!', { variant: 'warning' })
             return
         }
         if (commentText === '') return
@@ -74,23 +78,23 @@ const BloggerDetail = () => {
     return (
         <>
             <Navbar />
-            {loading && <FullPageLoading />}
+            {loadingBlog && <FullPageLoading />}
 
-            {!loading && blog && <Box sx={{ px: 20 }}>
-                <Typography variant='h2' >{blog.title}</Typography>
+            {!loadingBlog && blog && <Box sx={{ px: 20 }}>
+                <Typography sx={{ mb: 2 }} variant='h2' >{blog.title}</Typography>
                 <Typography>{blog.blogger}</Typography>
                 <Typography sx={{ fontSize: 11 }}>{moment(blog.createdAt.toDate()).fromNow()}</Typography>
             </Box>}
 
-            {!loading && blog && <>
+            {!loadingBlog && blog && <>
                 <Box sx={{ px: 20 }}>
                     <img alt='Cover' style={{ padding: 30 }} src={blog.coverImage} />
                 </Box>
             </>}
-            {!loading && blog &&
+            {!loadingBlog && blog &&
                 jsonToJSX(JSON.parse(blog.blockData))}
 
-            {!loading && blog &&
+            {(!loadingBlog && !loading && blog) &&
                 <Box sx={{ mt: 10, mb: 5, px: 20 }} >
 
                     <Grid container direction='row' gap={3}>
@@ -101,6 +105,10 @@ const BloggerDetail = () => {
                             }
                             if (user.uid === blog.bloggerId) {
                                 enqueueSnackbar('Cannot Like your own Blog!', { variant: 'warning' })
+                                return
+                            }
+                            if (isAnonymous) {
+                                enqueueSnackbar('Please Login give feedback with this Blog!', { variant: 'warning' })
                                 return
                             }
                             if (!active) {
@@ -130,11 +138,18 @@ const BloggerDetail = () => {
                         <Grid item>
                             <Typography>{blog.commentsCount}</Typography>
                         </Grid>
+                        <Grid item>
+
+                            <VisibilityOutlined color={'#444'} />
+                        </Grid>
+                        <Grid item>
+                            <Typography>{blog.viewsCount}</Typography>
+                        </Grid>
                     </Grid>
                 </Box>}
-            {!loading && blog && <Box sx={{ px: 20, py: 1 }}><Typography variant='h4' >Comments</Typography></Box>}
+            {!loadingBlog && blog && <Box sx={{ px: 20, py: 1 }}><Typography variant='h4' >Comments</Typography></Box>}
 
-            <Box sx={{ px: 20, py: 2 }} >
+            {(!loadingBlog && !loading && blog) && <Box sx={{ px: 20, py: 2 }} >
                 <Grid container gap={3}>
                     <Grid item md={10} sm={10} lg={10}>
                         <FormControl fullWidth sx={{ m: 1 }} variant="standard">
@@ -151,10 +166,10 @@ const BloggerDetail = () => {
 
                     <Button onClick={handleCommentButtonClick} variant='text'>Comment</Button>
                 </Grid>
-            </Box>
+            </Box>}
 
 
-            {!loading && blog && <Box sx={{ px: 20 }} >
+            {!loadingBlog && blog && <Box sx={{ px: 20 }} >
                 {blog.comments.map(comment => {
                     return (
                         <Paper style={{ padding: "40px 20px" }}>
@@ -163,11 +178,11 @@ const BloggerDetail = () => {
                                     <Avatar alt="Example" />
                                 </Grid>
                                 <Grid justifyContent="left" item xs zeroMinWidth>
-                                    <Typography variant='h6' style={{ margin: 0, textAlign: "left", fontSize: 12 }}>{comment.username}</Typography>
+                                    <Typography variant='h6' style={{ margin: 0, textAlign: "left", fontSize: 12 }}>{comment.username || 'Unknown'}</Typography>
                                     <Typography variant='p' style={{ textAlign: "left" }}>
                                         {comment.comment}
                                     </Typography>
-                                    <Typography sx={{ py: 1 }} style={{ textAlign: "left", color: "gray" }}>
+                                    <Typography sx={{ py: 1 , fontSize : 12}} style={{ textAlign: "left", color: "gray" }}>
                                         {moment(comment.createdAt.toDate()).fromNow()}
                                     </Typography>
                                 </Grid>
