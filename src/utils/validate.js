@@ -9,3 +9,14 @@ export const validateEmail = (email) => {
 export const validatePassword = (password) => {
     return password.length >= 8
 }
+
+export const validateName = (name) => {
+    var regName = /^[a-zA-Z]+ [a-zA-Z]+$/;
+    if (!regName.test(name)) {
+
+        return false;
+    } else {
+        return true;
+    }
+}
+

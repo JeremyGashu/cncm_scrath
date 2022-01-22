@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 
 
-export default function jsonToJSX(block) {
+const jsonToJSX = (block) => {
     let jsx = block.map((block) => {
         switch (block.type) {
             case "header":
@@ -260,3 +260,5 @@ export default function jsonToJSX(block) {
         </Box>
     )
 }
+
+export default jsonToJSX

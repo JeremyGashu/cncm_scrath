@@ -1,0 +1,1 @@
+export const kGreenColor = '#43B914';

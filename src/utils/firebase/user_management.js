@@ -12,7 +12,18 @@ const addUserToDatabase = async (userInfo) => {
     try {
         console.log(userInfo)
         const userRef = doc(database, 'users', userInfo.uid);
-        await setDoc(userRef, userInfo)
+        await setDoc(userRef, userInfo, { merge: true })
+        return true
+    }
+    catch (e) {
+        console.log(e)
+        return false
+    }
+}
+const addUserInfo = async (userInfo) => {
+    try {
+        const userRef = doc(database, 'users', userInfo.uid);
+        await setDoc(userRef, userInfo, { merge: true })
         return true
     }
     catch (e) {
@@ -54,5 +65,6 @@ export {
     suspendUser,
     activateUser,
     grantBloggerRole,
-    revokeBloggerRole
+    revokeBloggerRole,
+    addUserInfo,
 }
