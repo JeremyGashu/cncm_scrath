@@ -1,8 +1,14 @@
 import { Box, Button, Grid, Typography } from "@mui/material"
 import MovieCard from "./MovieCard"
-import blog_image from '../assets/blog_image.svg'
+import royalty from '../assets/Royality.svg'
+import collaboration from '../assets/Collaboration.svg'
+import ownership from '../assets/Ownership.svg'
 import WhatWeStandForCard from "./WhatWeStandForCard"
 
+import bole from '../assets/bole.png'
+import sebat from '../assets/sebat.png'
+import yefikir from '../assets/yefikir.png'
+import bayne from '../assets/bayne.png'
 
 const OurWorks = () => {
     return (
@@ -28,13 +34,12 @@ const OurWorks = () => {
 
             <Grid container direction='row' justifyContent='space-evenly' alignItems='center'>
                 <Grid item>
-                    <MovieCard title='Title' image={blog_image} />
+                    <MovieCard title='Bole Manekia' image={bole} />
                 </Grid>
                 <Grid item>
-                    <MovieCard title='Title' image={blog_image} />                </Grid><Grid item>
-                    <MovieCard title='Title' image={blog_image} />                </Grid><Grid item>
-                    <MovieCard title='Title' image={blog_image} />                </Grid><Grid item>
-                    <MovieCard title='Title' image={blog_image} />                </Grid>
+                    <MovieCard title='Sebat Bet' image={sebat} /></Grid><Grid item>
+                    <MovieCard title='Yefikir Akukulu' image={yefikir} /></Grid><Grid item>
+                    <MovieCard title='Bayne Metash' image={bayne} /></Grid>
             </Grid>
 
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 5, mb: 3 }} ><Button sx={{ textAlign: 'center', color: 'black', fontSize: 12, fontWeight: 'bold', backgroundColor: '#1DEF55', mx: 1, boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px', '&:hover': { backgroundColor: '#1DEF55' } }} >View more projects</Button>
@@ -46,15 +51,15 @@ const OurWorks = () => {
 
             <Grid container direction='row' justifyContent='space-evenly' alignItems='center'>
                 <Grid item>
-                    <WhatWeStandForCard title='ROYALITY' image={blog_image} text='Handling issues related with Royalties of Ethiopian art works, handing over Royalty issues to the court process &amp; properly executing the Judgement process.' />
+                    <WhatWeStandForCard title='ROYALITY' image={royalty} text='Handling issues related with Royalties of Ethiopian art works, handing over Royalty issues to the court process &amp; properly executing the Judgement process.' />
                 </Grid>
 
                 <Grid item>
-                    <WhatWeStandForCard title='COLLABORATION' image={blog_image} text='We work and collaborate with companies &amp; associations like us and also with Government and Non Government Organizations.' />
+                    <WhatWeStandForCard title='COLLABORATION' image={collaboration} text='We work and collaborate with companies &amp; associations like us and also with Government and Non Government Organizations.' />
                 </Grid>
 
                 <Grid item>
-                    <WhatWeStandForCard title='OWNERSHIP' image={blog_image} text='We help the signage process of property ownership and getting legal enforcement of infringements to get justice.' />
+                    <WhatWeStandForCard title='OWNERSHIP' image={ownership} text='We help the signage process of property ownership and getting legal enforcement of infringements to get justice.' />
                 </Grid>
 
             </Grid>

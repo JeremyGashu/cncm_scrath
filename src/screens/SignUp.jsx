@@ -145,7 +145,7 @@ const SignUpPage = () => {
             <Navbar />
             <Grid container >
                 <Grid item lg={6} sm={12}>
-                    <img  style={{height : '90vh'}} src={image} alt='Login' />
+                    <img style={{height : '100vh'}} src={image} alt='Login' />
                 </Grid>
                 <Grid item lg={6} sm={12}>
                     <Container component="main" maxWidth="xs">

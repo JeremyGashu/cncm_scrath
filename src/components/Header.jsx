@@ -30,7 +30,7 @@ const HeaderComponenet = () => {
                 <Button sx={{ color: 'black', backgroundColor: kGreenColor, px: 4, py: 1, '&:hover': { backgroundColor: kGreenColor } }}>View More</Button>
             </Grid>
             <Grid item>
-            <Button sx={{ color: 'white', border : '1px solid white', backgroundColor: 'transparent', px: 4, py: 1, '&:hover': { backgroundColor: 'transparent' } }}>Contact Us</Button>
+                <Button sx={{ color: 'white', border: '1px solid white', backgroundColor: 'transparent', px: 4, py: 1, '&:hover': { backgroundColor: 'transparent' } }}>Contact Us</Button>
             </Grid>
         </Grid>
     </Box>

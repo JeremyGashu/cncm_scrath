@@ -2,8 +2,10 @@ import React from 'react'
 import HeaderComponenet from '../components/Header'
 import HowWeGotStarted from '../components/HowWeGotStarted'
 import Navbar from '../components/NavBar'
+import OurPartners from '../components/OurPartners'
 import OurWorks from '../components/OurWorks'
 import ReadBlogs from '../components/ReadBlogs'
+import SolutionsAndPackages from '../components/SolutionAndPackages'
 import WhatWeCover from '../components/WhatWeCover'
 
 
@@ -17,6 +19,8 @@ const HomePage = () => {
             <WhatWeCover />
             <HowWeGotStarted />
             <OurWorks />
+            <SolutionsAndPackages />
+            <OurPartners />
         </>
     )
 }

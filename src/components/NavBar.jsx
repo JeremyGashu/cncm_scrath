@@ -1,5 +1,4 @@
 import {
-    Avatar,
     Box,
     Button,
     Container,
@@ -13,6 +12,8 @@ import { Link as RouterLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/auth";
 import { PersonOutline } from "@mui/icons-material";
 import { useSnackbar } from 'notistack'
+import cncm_logo from '../assets/cncm_logo.svg'
+import { kGreenColor } from "../styles/colors";
 
 const Navbar = () => {
     const { signout, user, currentRole, loading, active, isAnonymous } = useAuth();
@@ -27,6 +28,8 @@ const Navbar = () => {
         // { name: "Bloggers", to: "/admin/bloggers", icon: <CreateIcon /> },
     ];
 
+    const ordinarySettings = ['OUR WORK', 'SOLUTION', 'BECOME PARTNER', 'BLOG'];
+
 
     return (
         <>
@@ -35,20 +38,14 @@ const Navbar = () => {
                     sx={{}}
                     disableGutters
                 >
-                    <Box sx={{ flexGrow: 1, mr: 2, display: { xs: "none", md: "flex" } }}>
-                        <Button component={RouterLink} color='primary' to='/'>
-                            CNCM
-                        </Button>
+                    <Box sx={{ flexGrow: 1, mr: 2, display: { lg: 'flex', md: "flex" } }}>
+                        <img height={45} onClick={() => {
+                            navigate('/')
+                        }} style={{ padding: '5px', cursor: 'pointer' }} src={cncm_logo} alt='CNCM' />
                     </Box>
 
                     <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
 
-                    </Box>
-
-                    <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-                        <RouterLink to='/'>
-                            <Typography>CNCM</Typography>
-                        </RouterLink>
                     </Box>
 
                     <Box sx={{ display: { xs: "none", md: "flex" } }}>
@@ -65,6 +62,16 @@ const Navbar = () => {
                             {currentRole === 'admin' && setttingsAdmin.map((setting) => (
                                 <Button component={RouterLink} to={setting.to} sx={{ color: "black" }}>
                                     {setting.name}
+                                </Button>
+
+
+                            ))}
+
+
+
+                            {currentRole != 'admin' && ordinarySettings.map((setting) => (
+                                <Button sx={{ color: "black",}}>
+                                    {setting}
                                 </Button>
 
 
@@ -102,34 +109,22 @@ const Navbar = () => {
                                 <Button onClick={() => {
                                     signout()
 
-                                }} sx={{ color: "black" }}>
+                                }} sx={{ color: kGreenColor, backgroundColor: 'white', fontWeight: 'bold' }}>
                                     Log Out
                                 </Button>
                             }
 
-                            {
-                                currentRole === 'user' &&
-                                <>
-                                    <Avatar />
-                                    <Typography>{user.name}</Typography>
-                                </>
-                            }
-
                             {isAnonymous &&
                                 <>
-                                    <Box sx={{ flexGrow: 0, justifyContent: 'space-around', alignItems: 'center' }}>
-                                        <Avatar />
-                                    </Box>
-
-                                    <Box sx={{ flexGrow: 0, justifyContent: 'space-around', alignItems: 'center', margin: 2 }}>
+                                    {/* <Box sx={{ flexGrow: 0, justifyContent: 'space-around', alignItems: 'center', margin: 2 }}>
                                         <Typography fontSize={12} >{user.name}</Typography>
-                                    </Box>
+                                    </Box> */}
 
-                                    <Button component={RouterLink} color='primary' to='/login'>
+                                    <Button sx={{ color: kGreenColor, backgroundColor: 'white', fontWeight: 'bold' }} component={RouterLink} color='primary' to='/login'>
                                         Login
                                     </Button>
 
-                                    <Button component={RouterLink} color='primary' to='/register'>
+                                    <Button sx={{ backgroundColor: kGreenColor, color: 'white', fontWeight: 'bold', '&:hover': { backgroundColor: kGreenColor, } }} component={RouterLink} color='primary' to='/register'>
                                         Register
                                     </Button>
                                 </>
@@ -141,12 +136,11 @@ const Navbar = () => {
                             {/* <Button component={RouterLink} to='/blogs'>
                                 BLOGS
                             </Button> */}
-                            <Box sx={{ width: 30 }} ></Box>
-                            <Button component={RouterLink} color='primary' to='/login'>
+                            <Button sx={{ color: kGreenColor, backgroundColor: 'white', fontWeight: 'bold' }} component={RouterLink} color='primary' to='/login'>
                                 Login
                             </Button>
 
-                            <Button component={RouterLink} color='primary' to='/register'>
+                            <Button sx={{ backgroundColor: kGreenColor, color: 'white', fontWeight: 'bold', '&:hover': { backgroundColor: kGreenColor, } }} component={RouterLink} color='primary' to='/register'>
                                 Register
                             </Button>
 
