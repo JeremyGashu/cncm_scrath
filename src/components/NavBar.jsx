@@ -333,7 +333,7 @@ export default function Navbar() {
     return (
         <header>
             <AppBar sx={{
-                position : 'relative',
+                position: 'relative',
                 backgroundColor: "white",
                 paddingRight: "79px",
                 paddingLeft: "30px",

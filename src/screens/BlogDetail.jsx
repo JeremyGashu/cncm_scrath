@@ -5,10 +5,10 @@ import { singlePublishedBlog as singlePublishedBlogQuery } from '../query/query'
 import jsonToJSX from '../utils/json_to_jsx'
 import FullPageLoading from '../components/FullPageLoading'
 import { Box, Typography, Grid, Paper, Avatar, FormControl, Input, InputLabel, Button } from '@mui/material'
-import moment from 'moment'
-import { FavoriteBorderOutlined, CommentSharp, FavoriteOutlined, ViewArrayOutlined, VisibilityOutlined } from '@mui/icons-material'
+import { FavoriteBorderOutlined, CommentSharp, FavoriteOutlined, VisibilityOutlined } from '@mui/icons-material'
 import Navbar from '../components/NavBar'
 import { useAuth } from '../hooks/auth'
+import moment from 'moment'
 import { useSnackbar } from 'notistack'
 import { addCommentToBlog, likeBlog, updateViewData } from '../utils/firebase/blog_management'
 const BloggerDetail = () => {
@@ -81,7 +81,7 @@ const BloggerDetail = () => {
             {loadingBlog && <FullPageLoading />}
 
             {!loadingBlog && blog && <Box sx={{ px: 20 }}>
-                <Typography sx={{ mb: 2 }} variant='h2' >{blog.title}</Typography>
+                <Typography sx={{ mb: 2 , color : '#444'}} variant='h3' >{blog.title}</Typography>
                 <Typography>{blog.blogger}</Typography>
                 <Typography sx={{ fontSize: 11 }}>{moment(blog.createdAt.toDate()).fromNow()}</Typography>
             </Box>}
@@ -182,7 +182,7 @@ const BloggerDetail = () => {
                                     <Typography variant='p' style={{ textAlign: "left" }}>
                                         {comment.comment}
                                     </Typography>
-                                    <Typography sx={{ py: 1 , fontSize : 12}} style={{ textAlign: "left", color: "gray" }}>
+                                    <Typography sx={{ py: 1, fontSize: 12 }} style={{ textAlign: "left", color: "gray" }}>
                                         {moment(comment.createdAt.toDate()).fromNow()}
                                     </Typography>
                                 </Grid>

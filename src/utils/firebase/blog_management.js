@@ -16,7 +16,7 @@ export const addBlogData = async (blogDescription, savedData) => {
             commentsCount: 0,
             likesCount: 0,
             viewsCount: 0,
-            title : blogDescription.title || '',
+            title: blogDescription.title || '',
             coverImage: blogDescription.coverImage || '',
             bloggerId: blogDescription.bloggerId || '',
             blogger: blogDescription.blogger
@@ -31,13 +31,17 @@ export const addBlogData = async (blogDescription, savedData) => {
 
 export const likeBlog = async (userId, blogId) => {
     let docRef = doc(database, 'blog_blocks', blogId)
+    let descriptionRef = doc(database, 'blog_description', blogId)
     await updateDoc(docRef, { likes: arrayUnion(userId), likesCount: increment(1) })
+    await updateDoc(descriptionRef, { likesCount: increment(1) })
 }
 
 export const addCommentToBlog = async (comment) => {
     console.log(comment)
     let docRef = doc(database, 'blog_blocks', comment.blogId)
+    let descriptionRef = doc(database, 'blog_description', comment.blogId)
     await updateDoc(docRef, { comments: arrayUnion(comment), commentsCount: increment(1) })
+    await updateDoc(descriptionRef, { commentsCount: increment(1) })
 }
 
 export const publishBlog = (id) => {
@@ -69,7 +73,7 @@ export const updateViewData = async (userId, blogId) => {
 
         //difference between current timestamp and lastseen timestamp
         const difference = (currentTimeStamp - lastSeenTimeStamp) / (60 * 1000)
-        console.log('difference',difference)
+        console.log('difference', difference)
         if (difference > 10) {
             console.log('Updating Views data again')
             const blogRef = doc(database, 'blog_blocks', blogId)

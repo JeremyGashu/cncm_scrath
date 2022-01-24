@@ -160,6 +160,8 @@ const EditorJs = () => {
                 bloggerImage: user.image || '',
                 deleted: false,
                 active: false,
+                likesCount: 0,
+                commentsCount: 0,
                 createdAt: serverTimestamp(),
             };
             if (user && active === true) {
