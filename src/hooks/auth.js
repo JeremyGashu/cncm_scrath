@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext, createContext } from 'react'
 import { auth, database } from '../firebase'
 import { authState } from 'rxfire/auth'
 import { addUserInfo, addUserToDatabase, getUserByUserId, userRegistered } from '../utils/firebase/user_management'
-import { doc, setDoc, updateDoc } from 'firebase/firestore'
+import { doc, increment, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore'
 
 const authContext = createContext()
 
@@ -30,7 +30,8 @@ function useProvideAuth() {
                 setActive(false)
                 setIsAnonymous(true)
                 setCurrentRole('anonymous')
-                let user = { uid: rawUser.uid, name: 'Anonymous', email: '', role: 'anonymous', active: true, image: '' }
+                await updateDoc(doc(database, 'stats', 'stats'), { anonymous_users: increment(1) })
+                let user = { uid: rawUser.uid, name: 'Anonymous', email: '', role: 'anonymous', active: true, image: '', createdAt: serverTimestamp() }
                 await addUserToDatabase(user)
                 setUser(user)
             }
@@ -45,7 +46,8 @@ function useProvideAuth() {
                 if (userData.exists && userData.data()) {
                     if (!userData.data()['uid']) {
                         console.log('adding the rest of the user data user data')
-                        await addUserInfo({ uid: user.uid, email: user.email, role: 'user', active: true })
+                        await addUserInfo({ uid: user.uid, email: user.email, role: 'user', active: true, createdAt: serverTimestamp() })
+                        await updateDoc(doc(database, 'stats', 'stats'), { registered_users: increment(1) })
                         setCurrentRole('user')
                         setActive(true)
                     }
@@ -56,7 +58,8 @@ function useProvideAuth() {
 
                 }
                 else {
-                    let success = await addUserToDatabase({ uid: user.uid, name: user.name, email: user.email, role: 'user', active: true, image: user.photoUrl })
+                    let success = await addUserToDatabase({ uid: user.uid, name: user.name, email: user.email, role: 'user', active: true, image: user.photoUrl, createdAt: serverTimestamp() })
+                    await updateDoc(doc(database, 'stats', 'stats'), { registered_users: increment(1) })
                     console.log(success)
                     setCurrentRole('user')
                 }

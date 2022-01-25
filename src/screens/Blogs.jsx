@@ -34,39 +34,8 @@ const BlogsPage = () => {
         <>
             <Navbar />
             {loading && <FullPageLoading />}
-            {/* <div className="container">
-                {!loading && blogs &&
-                    blogs.map(blog => {
-                        return (
-                            <>
-                                <div onClick={() => {
-                                    navigate(`/blogs/${blog.id}`)
-                                    console.log(blog.id)
-                                }} key={blog.id} className="card">
-                                    <div className="card__header">
-                                        <img src={blog.coverImage} alt="card__image" className="card__image" width={600} />
-                                    </div>
-                                    <div className="card__body">
-                                        <h4>{blog.title}</h4>
-                                        <p>{blog.description}</p>
-                                    </div>
-                                    <div className="card__footer">
-                                        <div className="user">
-                                            <Avatar />
-                                            <div className="user__info">
-                                                <h5>{blog.blogger}</h5>
-                                                <small>{moment(blog.createdAt.toDate()).fromNow()}</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </>
-                        )
-                    })
-                }
-            </div> */}
 
-            <Grid container>
+            <Grid container alignItems='start'>
                 {!loading && blogs && blogs.map(blog => {
                     return (
                         <BlogCard blog={blog} />
@@ -74,12 +43,13 @@ const BlogsPage = () => {
                 })}
 
                 {!loading && blogs && <Grid item sm={12} lg={3} sx={{ p: 5 }}>
-                    <Box sx={{ p: 2, backgroundColor: '#f0efed', borderRadius: 1 }} >
+                    <Box sx={{ p: 2, backgroundColor: '#f5f5f5', borderRadius: 1 }} >
                         <Typography sx={{ fontWeight: 'bold', fontSize: 17, color: kGreenColor, m: 1 }} >Suggestion</Typography>
                         <Divider />
 
                         {blogs.map(blog => {
                             return (
+
                                 <SuggestedCard blog={blog} />
                             )
                         })}

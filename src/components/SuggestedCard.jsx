@@ -1,5 +1,5 @@
 import moment from "moment"
-import { Box, Divider, Grid, Typography } from '@mui/material'
+import { Divider, Grid, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 
 const SuggestedCard = ({ blog }) => {

@@ -11,6 +11,8 @@ import EditorJs from "./screens/EditorPage";
 import BloggerDetail from "./screens/BlogDetail";
 import MyBLogs from "./screens/MyBlogs";
 import AdminBlogs from "./screens/AdminBlogs";
+import AdminDashBoard from "./screens/DashBoard";
+import AdminBloggers from "./screens/AdminBloggers";
 
 
 function App() {
@@ -25,18 +27,24 @@ function App() {
           <Route path='login' element={<LoginPage />} />
           <Route path='register' element={<SignUpPage />} />
 
+
           <Route element={<PrivateRoute routeRole='admin' />}>
             <Route path='/admin/blogs' element={<AdminBlogs />}>
             </Route>
           </Route>
 
-          {/* <Route element={<PrivateRoute routeRole='admin' />}>
-            <Route path='/admin/bloggers' element={<BloggerssPage />}>
+          <Route element={<PrivateRoute routeRole='admin' />}>
+            <Route path='/admin/bloggers' element={<AdminBloggers />}>
             </Route>
-          </Route> */}
+          </Route>
 
           <Route element={<PrivateRoute routeRole='admin' />}>
             <Route path='/admin/users' element={<AdminUsers />}>
+            </Route>
+          </Route>
+
+          <Route element={<PrivateRoute routeRole='admin' />}>
+            <Route path='/admin/dashboard' element={<AdminDashBoard />}>
             </Route>
           </Route>
 

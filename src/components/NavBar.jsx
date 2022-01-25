@@ -21,26 +21,6 @@ import cncm_logo from '../assets/cncm_logo.svg'
 import { kGreenColor } from "../styles/colors";
 
 
-
-const headersData = [
-    {
-        label: "Listings",
-        href: "/listings",
-    },
-    {
-        label: "Mentors",
-        href: "/mentors",
-    },
-    {
-        label: "My Account",
-        href: "/account",
-    },
-    {
-        label: "Log Out",
-        href: "/logout",
-    },
-];
-
 export default function Navbar() {
 
     const [state, setState] = useState({
@@ -63,7 +43,7 @@ export default function Navbar() {
         { name: "Bloggers", to: "/admin/bloggers", icon: <CreateOutlined /> },
     ];
 
-    const ordinarySettings = ['OUR WORK', 'SOLUTION', 'BECOME PARTNER', 'BLOG'];
+    const ordinarySettings = ['OUR WORK', 'SOLUTION', 'BECOME PARTNER'];
 
     useEffect(() => {
         const setResponsiveness = () => {
@@ -320,12 +300,15 @@ export default function Navbar() {
 
     const cncmLogo = (
         <Typography variant="h6" component="h1" sx={{
+            cursor: 'pointer',
             fontFamily: "Work Sans, sans-serif",
             fontWeight: 600,
             color: "#FFFEFE",
             textAlign: "left",
         }}>
-            <img height={40} src={cncm_logo} alt='CNCM Logo' />
+            <img onClick={() => {
+                navigate('/')
+            }} height={40} src={cncm_logo} alt='CNCM Logo' />
         </Typography>
     );
 

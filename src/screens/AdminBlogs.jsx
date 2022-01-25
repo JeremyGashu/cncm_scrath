@@ -1,6 +1,6 @@
 import moment from 'moment'
 import React from 'react'
-import { Table, Paper, Box, TableHead, TableRow, TableCell, TableBody, TableContainer, Typography, Switch, Button } from '@mui/material';
+import { Table, Paper, Box, TableHead, TableRow, TableCell, TableBody, TableContainer, Typography, Switch, Button, IconButton } from '@mui/material';
 
 import { useState, useEffect } from 'react'
 import { collectionData } from 'rxfire/firestore'
@@ -10,6 +10,7 @@ import { useAuth } from '../hooks/auth'
 import { allBlogsForAdminQuery } from '../query/query'
 import { publishBlog, unpublishBlog } from '../utils/firebase/blog_management';
 import { useNavigate } from 'react-router-dom';
+import { VisibilityOutlined } from '@mui/icons-material';
 const AdminBlogs = () => {
     const { user, active } = useAuth()
     const [loading, setLoading] = useState()
@@ -88,16 +89,16 @@ const AdminBlogs = () => {
                                             <TableCell align="right"><Typography sx={{ fontSize: 12 }}>{row.title}</Typography></TableCell>
                                             <TableCell align="right"><Typography sx={{ color: row.active ? 'green' : 'red', fontSize: 12 }}>{row.active ? 'Published' : 'Unpublished'}</Typography></TableCell>
                                             <TableCell align="right"><Switch checked={row.active} onChange={(e) => { handleBlogStateChange(e, row.id) }} color='success'>Active</Switch></TableCell>
-                                            <TableCell align="right"><Button color='secondary' onClick={() => { navigate(`/blogs/${row.id}`) }} >Read</Button></TableCell>
+                                            <TableCell align="right"><IconButton onClick={() => {navigate(`/blogs/${row.id}`)}} ><VisibilityOutlined></VisibilityOutlined></IconButton></TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>
                             </Table>
                         </TableContainer>
-                    </Box>
+                </Box>
                 </Box>
             }
-        </div>
+        </div >
     )
 }
 

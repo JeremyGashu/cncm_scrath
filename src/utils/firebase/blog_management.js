@@ -22,6 +22,9 @@ export const addBlogData = async (blogDescription, savedData) => {
             blogger: blogDescription.blogger
         };
         await setDoc(doc(database, "blog_blocks", res.id), blogMeta);
+        await updateDoc(doc(database, 'users', blogDescription.bloggerId), { posts: increment(1) })
+        await updateDoc(doc(database, 'stats', 'stats'), { likes: increment(1) })
+
         return true
     } catch (error) {
         console.log(error)
@@ -34,6 +37,8 @@ export const likeBlog = async (userId, blogId) => {
     let descriptionRef = doc(database, 'blog_description', blogId)
     await updateDoc(docRef, { likes: arrayUnion(userId), likesCount: increment(1) })
     await updateDoc(descriptionRef, { likesCount: increment(1) })
+    await updateDoc(doc(database, 'stats', 'stats'), { likes: increment(1) })
+    await addDoc(collection(database, 'likesData'), { timestamp: serverTimestamp() })
 }
 
 export const addCommentToBlog = async (comment) => {
@@ -62,6 +67,7 @@ export const updateViewData = async (userId, blogId) => {
         const blogRef = doc(database, 'blog_blocks', blogId)
         await setDoc(viewsRef, { lastSeen: serverTimestamp() })
         await updateDoc(blogRef, { viewsCount: increment(1) })
+        await addDoc(collection(database, 'viewsData'), { timestamp: serverTimestamp() })
         return true
     }
     else {
@@ -79,6 +85,8 @@ export const updateViewData = async (userId, blogId) => {
             const blogRef = doc(database, 'blog_blocks', blogId)
             await setDoc(viewsRef, { lastSeen: serverTimestamp() })
             await updateDoc(blogRef, { viewsCount: increment(1) })
+            await updateDoc(doc(database, 'stats', 'stats'), { views: increment(1) })
+
             return true
         }
         else {

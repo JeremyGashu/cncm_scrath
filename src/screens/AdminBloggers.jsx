@@ -6,22 +6,23 @@ import { collectionData } from 'rxfire/firestore'
 import FullPageLoading from '../components/FullPageLoading'
 import Navbar from '../components/NavBar'
 import { useAuth } from '../hooks/auth'
-import { ordinaryUsersQuery } from '../query/query'
+import { bloggersQuery } from '../query/query';
+// import { usersAndBloggserQuery } from '../query/query'
 import { activateUser, grantBloggerRole, revokeBloggerRole, suspendUser } from '../utils/firebase/user_management';
-const AdminUsers = () => {
+const AdminBloggers = () => {
     const { user, active } = useAuth()
     const [loading, setLoading] = useState()
-    const [users, setUsers] = useState()
+    const [bloggers, setBloggers] = useState()
     const [rows, setRows] = useState([])
 
     useEffect(() => {
         if (user && active) {
             setLoading(true)
-            collectionData(ordinaryUsersQuery(), { idField: 'id' }).subscribe(users => {
-                console.log(users)
-                setUsers(users)
-                let userRows = users.map(user => createData(user))
-                setRows(userRows)
+            collectionData(bloggersQuery(), { idField: 'id' }).subscribe(bloggers => {
+                console.log(bloggers)
+                setBloggers(bloggers)
+                let bloggerRows = bloggers.map(blogger => createData(blogger))
+                setRows(bloggerRows)
                 setLoading(false)
             })
         }
@@ -48,8 +49,8 @@ const AdminUsers = () => {
         }
     }
 
-    const createData = ({ name, email, role, active, id }) => {
-        return { name, email, role, active, id };
+    const createData = ({ name, email, role, active, id, posts }) => {
+        return { name, email, role, active, id, posts };
     }
 
     return (
@@ -60,18 +61,19 @@ const AdminUsers = () => {
             }
 
             {
-                !loading && users &&
+                !loading && bloggers &&
                 <Box>
                     <Box sx={{ padding: 5 }}>
                         <TableContainer>
-                            <Table sx={{ maxWidth: 850 }} aria-label="simple table">
+                            <Table sx={{ maxWidth: 600 }} aria-label="simple table">
                                 <TableHead>
                                     <TableRow>
                                         <TableCell><Typography sx={{ fontSize: 12 }}>Name</Typography></TableCell>
                                         <TableCell align="right"><Typography sx={{ fontSize: 12 }}>Email</Typography></TableCell>
+                                        <TableCell align="right"><Typography sx={{ fontSize: 12 }}>Posts</Typography></TableCell>
                                         <TableCell align="right"><Typography sx={{ fontSize: 12 }}>Activity Status</Typography></TableCell>
                                         <TableCell align="right"><Typography sx={{ fontSize: 12 }}>Blogger Role</Typography></TableCell>
-                                        <TableCell align="right"><Typography sx={{ fontSize: 12 }}>Actions</Typography></TableCell>
+                                        <TableCell align="right"><Typography sx={{ fontSize: 12 }}>Suspend/Activate</Typography></TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -84,10 +86,12 @@ const AdminUsers = () => {
                                                 <Typography sx={{ fontSize: 12 }}>{row.name}</Typography>
                                             </TableCell>
                                             <TableCell align="right"><Typography sx={{ fontSize: 12 }}>{row.email}</Typography></TableCell>
+                                            <TableCell align="right"><Typography sx={{ fontSize: 12 }}>{row.posts || 0}</Typography></TableCell>
                                             <TableCell align="right"><Typography sx={{ color: row.active ? 'green' : 'red', fontSize: 12 }}>{row.active ? 'Active' : 'Suspended'}</Typography></TableCell>
                                             <TableCell align="right"><Switch checked={row.role === 'blogger'} onChange={(e) => { handleChangeUserRole(e, row.id) }} color='success'>Active</Switch></TableCell>
-
                                             <TableCell align="right"><Switch checked={row.active} onChange={(e) => { handleUserStateChange(e, row.id) }} color='success'>Active</Switch></TableCell>
+
+
                                         </TableRow>
                                     ))}
                                 </TableBody>
@@ -101,4 +105,4 @@ const AdminUsers = () => {
 }
 
 
-export default AdminUsers
+export default AdminBloggers

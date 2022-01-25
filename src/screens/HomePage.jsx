@@ -8,7 +8,6 @@ import ReadBlogs from '../components/ReadBlogs'
 import SolutionsAndPackages from '../components/SolutionAndPackages'
 import WhatWeCover from '../components/WhatWeCover'
 
-
 const HomePage = () => {
 
     return (
