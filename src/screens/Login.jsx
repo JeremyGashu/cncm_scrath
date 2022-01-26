@@ -65,11 +65,11 @@ const LoginPage = () => {
     return (
         <>
             <Navbar />
-            <Grid container>
-                <Grid item lg={6} sm={12}>
-                    <img style={{height : '90vh'}} src={image} alt='Login' />
+            <Grid container alignItems='center'>
+                <Grid item lg={6} sm={12} md={12}>
+                    <img src={image} alt='Login' />
                 </Grid>
-                <Grid item lg={6} sm={12}>
+                <Grid item lg={6} sm={12} md={12}>
                     <Container component="main" maxWidth="xs">
                         <CssBaseline />
                         <Box

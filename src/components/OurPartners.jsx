@@ -7,8 +7,8 @@ import omni from '../assets/omni.svg'
 
 const OurPartners = () => {
     return (
-        <Box sx={{ p: 3 }}>
-            <Typography sx={{ fontSize: 40, color: '#555555', fontWeight: 'bold', textAlign: 'center' }}>Our Partners</Typography>
+        <Box sx={{ p: 3, mt: 4 }}>
+            <Typography sx={{ fontSize: 37, color: 'black', fontWeight: 'bold', textAlign: 'center' }}>OUR PARTNERS</Typography>
 
             <Grid sx={{ mb: 2 }} container direction='row' justifyContent='space-evenly' alignItems='center' gap={1}>
                 <Grid item>

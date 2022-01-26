@@ -1,1 +1,1 @@
-export const kGreenColor = '#43B914';
+export const kGreenColor = '#4DD400';

@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom'
 
 const BlogCard = ({ blog }) => {
     const navigate = useNavigate()
-    return (<Grid item sm={12} lg={9} sx={{ p: 5 }}>
+    return (
         <Grid container alignItems='center'>
             <Grid item sm={12} lg={8} sx={{ p: 5 }}>
                 <Grid container direction='row' alignItems='center'>
@@ -64,8 +64,7 @@ const BlogCard = ({ blog }) => {
             <Grid item sm={12} lg={12} md={12} >
                 <Divider />
             </Grid>
-        </Grid>
-    </Grid>)
+        </Grid>)
 }
 
 export default BlogCard

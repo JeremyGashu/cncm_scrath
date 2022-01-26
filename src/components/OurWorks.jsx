@@ -12,14 +12,14 @@ import bayne from '../assets/bayne.png'
 
 const OurWorks = () => {
     return (
-        <Box >
-            <Grid container sx={{ p: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} justifyContent='space-between' alignItems='center'>
+        <Box id='owrWorks'>
+            <Grid container sx={{ px: 10, py: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} justifyContent='space-between' alignItems='center'>
                 <Grid item>
-                    <Typography sx={{ color: '#333333', fontSize: 30, fontWeight: 'bold' }}>OUR WORKS</Typography>
+                    <Typography sx={{ color: 'black', fontSize: 30, fontWeight: 'bold' }}>OUR WORKS</Typography>
                     <Typography sx={{ color: '#1DEF55', fontSize: 20, fontWeight: 'bold' }}>Cases we handled</Typography>
                 </Grid>
 
-                <Grid item>
+                <Grid item sx={{p:1}}>
                     <Button sx={{ color: 'black', fontSize: 12, backgroundColor: 'white', mx: 1, '&:hover': { backgroundColor: 'white' } }} >All</Button>
 
                     <Button sx={{ color: 'black', fontSize: 12, backgroundColor: '#1DEF55', mx: 1, boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px', '&:hover': { backgroundColor: '#1DEF55' } }} >Film</Button>
@@ -37,16 +37,23 @@ const OurWorks = () => {
                     <MovieCard title='Bole Manekia' image={bole} />
                 </Grid>
                 <Grid item>
-                    <MovieCard title='Sebat Bet' image={sebat} /></Grid><Grid item>
-                    <MovieCard title='Yefikir Akukulu' image={yefikir} /></Grid><Grid item>
-                    <MovieCard title='Bayne Metash' image={bayne} /></Grid>
+                    <MovieCard title='Sebat Bet' image={sebat} /></Grid>
+                <Grid item>
+                    <MovieCard title='Yefikir Akukulu' image={yefikir} /></Grid>
+                <Grid item>
+                    <MovieCard title='Bayne Metash' image={bayne} />
+                </Grid>
+                <Grid item>
+                    <MovieCard title='Yachi Neger' image={bayne} />
+                </Grid>
             </Grid>
 
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 5, mb: 3 }} ><Button sx={{ textAlign: 'center', color: 'black', fontSize: 12, fontWeight: 'bold', backgroundColor: '#1DEF55', mx: 1, boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px', '&:hover': { backgroundColor: '#1DEF55' } }} >View more projects</Button>
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 10 }} >
+                <Button sx={{ textAlign: 'center', color: 'black', fontSize: 12, fontWeight: 'bold', backgroundColor: '#1DEF55', mx: 1, boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px', '&:hover': { backgroundColor: '#1DEF55', } }} >View more projects</Button>
             </Box>
 
             <Typography sx={{ fontSize: 48, color: 'black', fontWeight: 'bold', textAlign: 'center' }}>WHAT WE STAND FOR</Typography>
-            <Typography sx={{ fontSize: 18, color: '#1DEF55', fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase' }}>CNCM provides the community support, debate and foster the work of all members</Typography>
+            <Typography sx={{ fontSize: 18, color: '#1DEF55', fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase' , p:1}}>CNCM provides the community support, debate and foster the work of all members</Typography>
 
 
             <Grid container direction='row' justifyContent='space-evenly' alignItems='center'>

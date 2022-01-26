@@ -7,7 +7,7 @@ const SuggestedCard = ({ blog }) => {
     return (<div onClick={() => {
         navigate(`/blogs/${blog.id}`)
     }} >
-        <Grid container >
+        <Grid container sx={{mb:2, cursor : 'pointer'}}>
             <Grid container alignItems='center'>
                 <Grid item sx={{ mx: 1 }}>
                     <Typography sx={{ fontSize: 13, color: '#444', fontWeight: 'bold' }} >{blog.blogger}</Typography>

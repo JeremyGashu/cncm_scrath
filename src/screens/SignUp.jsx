@@ -32,7 +32,6 @@ const SignUpPage = () => {
 
     const [loading, setLoading] = useState(false)
     const [selectedFile, setSelectedFile] = useState()
-    const [downloadUrl, setDownloadUrl] = useState()
     const [preview, setPreview] = useState()
     const { registerUserManually } = useAuth()
     const { enqueueSnackbar } = useSnackbar()
@@ -143,9 +142,9 @@ const SignUpPage = () => {
     return (
         <>
             <Navbar />
-            <Grid container >
+            <Grid container alignItems='center'>
                 <Grid item lg={6} sm={12}>
-                    <img style={{height : '100vh'}} src={image} alt='Login' />
+                    <img  src={image} alt='Login' />
                 </Grid>
                 <Grid item lg={6} sm={12}>
                     <Container component="main" maxWidth="xs">

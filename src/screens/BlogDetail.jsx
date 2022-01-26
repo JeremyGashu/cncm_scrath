@@ -1,24 +1,38 @@
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { docData } from 'rxfire/firestore'
 import { singlePublishedBlog as singlePublishedBlogQuery } from '../query/query'
 import jsonToJSX from '../utils/json_to_jsx'
 import FullPageLoading from '../components/FullPageLoading'
-import { Box, Typography, Grid, Paper, Avatar, FormControl, Input, InputLabel, Button } from '@mui/material'
-import { FavoriteBorderOutlined, CommentSharp, FavoriteOutlined, VisibilityOutlined } from '@mui/icons-material'
+import { Box, Typography, Grid, Paper, Avatar, FormControl, Input, InputLabel, Button, Breadcrumbs, Link } from '@mui/material'
+import { FavoriteBorderOutlined, CommentSharp, FavoriteOutlined, VisibilityOutlined, ArrowForwardIos } from '@mui/icons-material'
 import Navbar from '../components/NavBar'
 import { useAuth } from '../hooks/auth'
 import moment from 'moment'
 import { useSnackbar } from 'notistack'
-import { addCommentToBlog, likeBlog, updateViewData } from '../utils/firebase/blog_management'
+import { addCommentToBlog, deleteBlog, likeBlog, publishBlog, updateViewData } from '../utils/firebase/blog_management'
+import { kGreenColor } from '../styles/colors'
 const BloggerDetail = () => {
 
     const params = useParams()
     const [blog, setBlog] = useState()
     const [commentText, setCommentText] = useState('')
     const [loadingBlog, setLoadingBlog] = useState(false)
-    const { user, active, loading, isAnonymous } = useAuth()
+    const { user, active, loading, isAnonymous, currentRole } = useAuth()
     const { enqueueSnackbar } = useSnackbar();
+    const navigate = useNavigate()
+
+    const handleBlogStateChange = (id) => {
+
+        publishBlog(id)
+
+    }
+    const handleDelete = async (id) => {
+        let status = await deleteBlog(id)
+        if (status) {
+            navigate('/admin/blogs')
+        }
+    }
 
     useEffect(() => {
         setLoadingBlog(true)
@@ -69,7 +83,7 @@ const BloggerDetail = () => {
 
         console.log(user)
 
-        await addCommentToBlog(comment)
+        await addCommentToBlog(comment, blog)
 
 
         setCommentText('')
@@ -77,11 +91,45 @@ const BloggerDetail = () => {
     }
     return (
         <>
-            <Navbar />
+            <Navbar readingBlog={true} />
             {loadingBlog && <FullPageLoading />}
 
+            {
+                !loadingBlog && blog && <Grid sx={{ px: 20, my: 3 }} container direction='row' justifyContent='space-between' alignItems='center'>
+                    <Grid item>
+                        <Breadcrumbs separator={<ArrowForwardIos fontSize='small' />} >
+                            <Link sx={{ color: '#444', fontSize: 12, textDecoration: 'none' }} to='/admin/blogs'>Blog</Link>
+                            <Link sx={{ color: '#444', fontSize: 12, textDecoration: 'none' }} to='/admin/blogs' >{`${blog.title}`}</Link>
+
+                        </Breadcrumbs>
+                    </Grid>
+                    <Grid item>
+                        {
+                            !loadingBlog && blog && !blog.active && currentRole === 'admin' && <>
+                                <Button onClick={() => { handleBlogStateChange(blog.id) }} sx={{ color: 'white', backgroundColor: kGreenColor, mx: 1, fontWeight: 'bold', '&:hover': { backgroundColor: kGreenColor } }}>Publish</Button>
+                                <Button onClick={() => { handleDelete(blog.id) }} sx={{
+                                    mx: 1, fontWeight: 'bold', color: 'white', backgroundColor: 'red', '&:hover': {
+                                        backgroundColor: 'red',
+
+                                    }
+                                }} >Delete</Button></>
+                        }
+
+                        {
+                            !loadingBlog && blog && blog.active && currentRole === 'admin' && <>
+                                <Button onClick={() => { handleDelete(blog.id) }} sx={{
+                                    mx: 1, fontWeight: 'bold', color: 'white', backgroundColor: 'red', '&:hover': {
+                                        backgroundColor: 'red',
+
+                                    }
+                                }} >Delete</Button></>
+                        }
+                    </Grid>
+                </Grid>
+            }
+
             {!loadingBlog && blog && <Box sx={{ px: 20 }}>
-                <Typography sx={{ mb: 2 , color : '#444'}} variant='h3' >{blog.title}</Typography>
+                <Typography sx={{ mb: 2, color: '#444' }} variant='h3' >{blog.title}</Typography>
                 <Typography>{blog.blogger}</Typography>
                 <Typography sx={{ fontSize: 11 }}>{moment(blog.createdAt.toDate()).fromNow()}</Typography>
             </Box>}
@@ -116,7 +164,7 @@ const BloggerDetail = () => {
                                 return
                             }
                             if (!blog.likes.includes(user.uid)) {
-                                likeBlog(user.uid, blog.id)
+                                likeBlog(user, blog.id, blog.bloggerId)
                             }
 
                             else {

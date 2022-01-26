@@ -1,7 +1,7 @@
 import { collection, doc, query, where } from "firebase/firestore"
 import { database } from "../firebase"
 
-const daysCount = { 0: 31, 1: 28, 2: 31, 3: 30, 4: 31, 5: 30, 6: 31, 7: 31, 8: 30, 9: 31, 10: 30, 11: 31, }
+const daysCount = { 0: 31, 1: 28, 2: 31, 3: 30, 4: 31, 5: 30, 6: 31, 7: 31, 8: 30, 9: 31, 10: 30, 11: 31 }
 
 
 export const publishedBlogsQuery = query(
@@ -48,6 +48,11 @@ export const ordinaryUsersQuery = () => query(
     collection(database, 'users'),
     where('role', '==', 'user'),
 )
+export const notificationQuery = (id) => {
+    return query(collection(database, 'notifications'), where('to', '==', id))
+}
+
+
 
 export const bloggersQuery = () => query(
     collection(database, 'users'),

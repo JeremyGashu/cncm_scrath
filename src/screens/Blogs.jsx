@@ -36,11 +36,13 @@ const BlogsPage = () => {
             {loading && <FullPageLoading />}
 
             <Grid container alignItems='start'>
-                {!loading && blogs && blogs.map(blog => {
-                    return (
-                        <BlogCard blog={blog} />
-                    )
-                })}
+                <Grid item sm={12} lg={8} sx={{ p: 5 }}>
+                    {!loading && blogs && blogs.map(blog => {
+                        return (
+                            <BlogCard blog={blog} />
+                        )
+                    })}
+                </Grid>
 
                 {!loading && blogs && <Grid item sm={12} lg={3} sx={{ p: 5 }}>
                     <Box sx={{ p: 2, backgroundColor: '#f5f5f5', borderRadius: 1 }} >
