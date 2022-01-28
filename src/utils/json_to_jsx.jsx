@@ -9,10 +9,14 @@ import {
     TableHead,
     TableBody,
     TableRow,
+    useMediaQuery,
+    useTheme
 } from "@mui/material";
+import React from 'react'
 
-
-const jsonToJSX = (block) => {
+const JsonToJsx = ({ block }) => {
+    const theme = useTheme()
+    const query = useMediaQuery(theme.breakpoints.down(700))
     let jsx = block.map((block) => {
         switch (block.type) {
             case "header":
@@ -255,10 +259,10 @@ const jsonToJSX = (block) => {
         return null;
     });
     return (
-        <Box sx={{ px: 20 }}>
+        <Box sx={{ px: query ? 2 : 20 }}>
             {jsx}
         </Box>
     )
 }
 
-export default jsonToJSX
+export default JsonToJsx

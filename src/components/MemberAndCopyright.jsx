@@ -1,21 +1,23 @@
 import { ArrowRight } from "@mui/icons-material"
-import { Button, Grid, TextField, Typography } from "@mui/material"
+import { Button, Grid, TextField, Typography, useMediaQuery, useTheme } from "@mui/material"
 import community from '../assets/cccc.png'
 
 const MemberAndCopyrightChecking = () => {
+    const theme = useTheme()
+    const query = useMediaQuery(theme.breakpoints.down(600))
     return (
-        <Grid container sx={{ px: 6, py: 6 }} alignItems='center' justifyContent='space-between'>
-            <Grid item lg={6} sx={{ p: 3 }}>
+        <Grid container sx={{ px: 6, py: 6 }} alignItems='center' justifyContent='space-evenly'>
+            <Grid item lg={5} sx={{ p: 3 }}>
                 <img style={{ maxHeight: 300 }} src={community} alt='Community' />
 
             </Grid>
-            <Grid item lg={6} sx={{ p: 3 }}>
+            <Grid item lg={5} sx={{ p: 3 }}>
                 <Typography sx={{ fontWeight: 'bold', fontSize: 28 }}>MEMBER AND COPYRIGHT CHECKING</Typography>
                 <Typography sx={{ fontSize: 15, mb: 5 }}>Check and confirm creative souls and their works here by entering Member ID and search</Typography>
                 <Grid container>
                     <Grid item lg={8} sm={8}>
                         <TextField
-                            sx={{ border: '1px solid #1DEF55', px: 3, py: 1, borderTopLeftRadius: 25, borderBottomLeftRadius: 25, }}
+                            sx={{ border: '1px solid #1DEF55', px: 3, py: 1, borderTopLeftRadius: 25, borderBottomLeftRadius: 25, borderBottomRightRadius: query && 25, borderTopRightRadius: query && 25, m: query && 1 }}
                             variant="standard"
                             required
                             fullWidth
@@ -26,7 +28,7 @@ const MemberAndCopyrightChecking = () => {
                         />
                     </Grid>
                     <Grid item lg={4} sm={8}>
-                        <Button endIcon={<ArrowRight sx={{color : 'white'}} />} sx={{ '&:hover': { backgroundColor: '#1DEF55' }, color: 'white',fontWeight : 'bold', backgroundColor: '#1DEF55', border: '1px solid #1DEF55', px: 3, py: 1.5, borderRadius: 0, borderTopRightRadius: 25, borderBottomRightRadius: 25, }}>Search</Button>
+                        <Button fullWidth endIcon={<ArrowRight sx={{ color: 'white' }} />} sx={{ '&:hover': { backgroundColor: '#1DEF55' }, color: 'white', fontWeight: 'bold',backgroundColor: '#1DEF55', border: '1px solid #1DEF55', px: 3, py: 1.5, borderRadius: 0, borderTopLeftRadius: query && 25, borderBottomLeftRadius: query && 25, borderBottomRightRadius: 25, borderTopRightRadius: 25, m: query && 1 }}>Search</Button>
                     </Grid>
                 </Grid>
 

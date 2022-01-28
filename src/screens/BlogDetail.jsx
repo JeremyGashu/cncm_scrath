@@ -2,9 +2,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { docData } from 'rxfire/firestore'
 import { singlePublishedBlog as singlePublishedBlogQuery } from '../query/query'
-import jsonToJSX from '../utils/json_to_jsx'
 import FullPageLoading from '../components/FullPageLoading'
-import { Box, Typography, Grid, Paper, Avatar, FormControl, Input, InputLabel, Button, Breadcrumbs, Link } from '@mui/material'
+import { Box, Typography, Grid, Paper, Avatar, FormControl, Input, InputLabel, Button, Breadcrumbs, Link, useMediaQuery, useTheme } from '@mui/material'
 import { FavoriteBorderOutlined, CommentSharp, FavoriteOutlined, VisibilityOutlined, ArrowForwardIos } from '@mui/icons-material'
 import Navbar from '../components/NavBar'
 import { useAuth } from '../hooks/auth'
@@ -12,7 +11,12 @@ import moment from 'moment'
 import { useSnackbar } from 'notistack'
 import { addCommentToBlog, deleteBlog, likeBlog, publishBlog, updateViewData } from '../utils/firebase/blog_management'
 import { kGreenColor } from '../styles/colors'
+import Footer from '../components/Footer'
+import JsonToJsx from '../utils/json_to_jsx'
 const BloggerDetail = () => {
+
+    const theme = useTheme()
+    const query = useMediaQuery(theme.breakpoints.down(700))
 
     const params = useParams()
     const [blog, setBlog] = useState()
@@ -95,7 +99,7 @@ const BloggerDetail = () => {
             {loadingBlog && <FullPageLoading />}
 
             {
-                !loadingBlog && blog && <Grid sx={{ px: 20, my: 3 }} container direction='row' justifyContent='space-between' alignItems='center'>
+                !loadingBlog && blog && <Grid sx={{ px: query ? 2 : 20, my: 3 }} container direction='row' justifyContent='space-between' alignItems='center'>
                     <Grid item>
                         <Breadcrumbs separator={<ArrowForwardIos fontSize='small' />} >
                             <Link sx={{ color: '#444', fontSize: 12, textDecoration: 'none' }} to='/admin/blogs'>Blog</Link>
@@ -128,22 +132,23 @@ const BloggerDetail = () => {
                 </Grid>
             }
 
-            {!loadingBlog && blog && <Box sx={{ px: 20 }}>
+            {!loadingBlog && blog && <Box sx={{ px: query ? 2 : 20 }}>
                 <Typography sx={{ mb: 2, color: '#444' }} variant='h3' >{blog.title}</Typography>
                 <Typography>{blog.blogger}</Typography>
                 <Typography sx={{ fontSize: 11 }}>{moment(blog.createdAt.toDate()).fromNow()}</Typography>
             </Box>}
 
             {!loadingBlog && blog && <>
-                <Box sx={{ px: 20 }}>
+                <Box sx={{ px: query ? 2 : 20 }}>
                     <img alt='Cover' style={{ padding: 30 }} src={blog.coverImage} />
                 </Box>
             </>}
             {!loadingBlog && blog &&
-                jsonToJSX(JSON.parse(blog.blockData))}
+                < JsonToJsx block={JSON.parse(blog.blockData)} />
+            }
 
             {(!loadingBlog && !loading && blog) &&
-                <Box sx={{ mt: 10, mb: 5, px: 20 }} >
+                <Box sx={{ mt: 10, mb: 5, px: query ? 2 : 20 }} >
 
                     <Grid container direction='row' gap={3}>
                         <Grid onClick={() => {
@@ -195,9 +200,9 @@ const BloggerDetail = () => {
                         </Grid>
                     </Grid>
                 </Box>}
-            {!loadingBlog && blog && <Box sx={{ px: 20, py: 1 }}><Typography variant='h4' >Comments</Typography></Box>}
+            {!loadingBlog && blog && <Box sx={{ px: query ? 2 : 20, py: 1 }}><Typography variant='h4' >Comments</Typography></Box>}
 
-            {(!loadingBlog && !loading && blog) && <Box sx={{ px: 20, py: 2 }} >
+            {(!loadingBlog && !loading && blog) && <Box sx={{ px: query ? 2 : 20, py: 2 }} >
                 <Grid container gap={3}>
                     <Grid item md={10} sm={10} lg={10}>
                         <FormControl fullWidth sx={{ m: 1 }} variant="standard">
@@ -217,10 +222,10 @@ const BloggerDetail = () => {
             </Box>}
 
 
-            {!loadingBlog && blog && <Box sx={{ px: 20 }} >
+            {!loadingBlog && blog && <Box sx={{ px: query ? 2 : 20 }} >
                 {blog.comments.map(comment => {
                     return (
-                        <Paper style={{ padding: "40px 20px" }}>
+                        <Paper sx={{ px: query ? 2 : 20 }}>
                             <Grid container wrap="nowrap" spacing={2}>
                                 <Grid item>
                                     <Avatar alt="Example" />
@@ -238,7 +243,9 @@ const BloggerDetail = () => {
                         </Paper>
                     )
                 }).reverse()}
+
             </Box>}
+            <Footer />
 
 
         </>

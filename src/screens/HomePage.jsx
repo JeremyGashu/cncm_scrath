@@ -17,7 +17,7 @@ import { kGreenColor } from '../styles/colors'
 const HomePage = () => {
 
     return (
-        <Box sx={{ position: 'relative' }}>
+        <Box sx={{ position: 'relative', maxWidth: '99vw', overflowX: 'hidden' }}>
             <Navbar />
             <HeaderComponenet />
             <ReadBlogs />

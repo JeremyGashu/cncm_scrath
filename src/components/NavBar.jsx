@@ -7,6 +7,7 @@ import {
     Toolbar,
     IconButton,
     Drawer,
+    Grid,
 } from "@mui/material";
 
 import React, { useState, useEffect } from "react";
@@ -86,6 +87,16 @@ export default function Navbar() {
 
                     ))}
                 </Box>
+
+                <Box>
+                    {currentRole === 'admin' && setttingsAdmin.map((setting) => (
+                        <Button component={RouterLink} to={setting.to} sx={{ color: "black" }}>
+                            {setting.name}
+                        </Button>
+
+
+                    ))}
+                </Box>
                 <Box>
 
                     {
@@ -94,13 +105,7 @@ export default function Navbar() {
                             </>
                         ) : user ? (
                             <>
-                                {currentRole === 'admin' && setttingsAdmin.map((setting) => (
-                                    <Button component={RouterLink} to={setting.to} sx={{ color: "black", fontWeight: 'bold' }}>
-                                        {setting.name}
-                                    </Button>
 
-
-                                ))}
                                 {currentRole === 'blogger' &&
                                     <>
                                         <Button onClick={() => {
@@ -200,10 +205,85 @@ export default function Navbar() {
                         onClose: handleDrawerClose,
                     }}
                 >
-                    <Box sx={{
+
+                    <img style={{ padding: '10px', textAlign: 'center' }} width={150} src={cncm_logo} alt='Logo' />
+                    <Grid container direction='column' sx={{
                         padding: "20px 30px",
                         width: '80vw'
                     }}>
+
+                        {currentRole === 'admin' && setttingsAdmin.map((setting) => (
+                            <Grid item>
+
+                                <Button component={RouterLink} to={setting.to} sx={{ color: "black" }}>
+                                    {setting.name}
+                                </Button>
+                            </Grid>
+
+
+                        ))}
+
+                        {currentRole !== 'admin' && ordinarySettings.map((setting) => (
+                            <Grid item>
+                                <Button sx={{ color: "black", }}>
+                                    {setting}
+                                </Button>
+                            </Grid>
+                        ))}
+                        <Grid item>
+                            {
+                                (currentRole === 'admin' || currentRole === 'blogger' || currentRole === 'user') &&
+                                <Button onClick={() => {
+                                    signout()
+
+                                }} sx={{ color: kGreenColor, backgroundColor: 'white', fontWeight: 'bold' }}>
+                                    Log Out
+                                </Button>
+                            }
+                        </Grid>
+                        {
+                            currentRole === 'blogger' &&
+                            <>
+                                <Grid item>
+                                    <Button onClick={() => {
+                                        if (active) {
+                                            navigate('/blogger/create');
+                                        }
+                                        else {
+                                            enqueueSnackbar('Cannot create blogs. You are suspended temporarily!', { variant: 'warning' });
+                                        }
+                                    }} sx={{ color: "black" }}>
+                                        Create Blog
+                                    </Button>
+                                </Grid>
+                                <Grid item>
+                                    <Button onClick={() => {
+                                        navigate('/blogger/blogs');
+
+                                    }} sx={{ color: "black" }}>
+                                        My Blogs
+                                    </Button>
+                                </Grid>
+                            </>
+                        }
+
+
+                        <Grid item>
+                            {isAnonymous &&
+                                <>
+                                    <Grid item>
+                                        <Button sx={{ color: kGreenColor, backgroundColor: 'white', fontWeight: 'bold' }} component={RouterLink} color='primary' to='/login'>
+                                            Login
+                                        </Button>
+                                    </Grid>
+
+                                    <Grid item>
+                                        <Button sx={{ backgroundColor: kGreenColor, color: 'white', fontWeight: 'bold', '&:hover': { backgroundColor: kGreenColor, } }} component={RouterLink} color='primary' to='/register'>
+                                            Register
+                                        </Button>
+                                    </Grid>
+                                </>
+                            }</Grid>
 
                         <>
                             {loading ? (
@@ -213,74 +293,19 @@ export default function Navbar() {
                             ) : user ? (
                                 <>
 
-                                    {currentRole === 'admin' && setttingsAdmin.map((setting) => (
-                                        <Button component={RouterLink} to={setting.to} sx={{ color: "black" }}>
-                                            {setting.name}
-                                        </Button>
-
-
-                                    ))}
-
-                                    {currentRole !== 'admin' && ordinarySettings.map((setting) => (
-                                        <Button sx={{ color: "black", }}>
-                                            {setting}
-                                        </Button>
-
-
-                                    ))}
 
 
 
 
 
-                                    {currentRole === 'blogger' &&
-                                        <>
-                                            <Button onClick={() => {
-                                                if (active) {
-                                                    navigate('/blogger/create');
-                                                }
-                                                else {
-                                                    enqueueSnackbar('Cannot create blogs. You are suspended temporarily!', { variant: 'warning' });
-                                                }
-                                            }} sx={{ color: "black" }}>
-                                                Create Blog
-                                            </Button>
 
-                                            <Button onClick={() => {
-                                                navigate('/blogger/blogs');
 
-                                            }} sx={{ color: "black" }}>
-                                                My Blogs
-                                            </Button>
 
-                                        </>
-                                    }
 
-                                    {
-                                        (currentRole === 'admin' || currentRole === 'blogger' || currentRole === 'user') &&
-                                        <Button onClick={() => {
-                                            signout()
 
-                                        }} sx={{ color: kGreenColor, backgroundColor: 'white', fontWeight: 'bold' }}>
-                                            Log Out
-                                        </Button>
-                                    }
 
-                                    {isAnonymous &&
-                                        <>
-                                            {/* <Box sx={{ flexGrow: 0, justifyContent: 'space-around', alignItems: 'center', margin: 2 }}>
-                                        <Typography fontSize={12} >{user.name}</Typography>
-                                    </Box> */}
 
-                                            <Button sx={{ color: kGreenColor, backgroundColor: 'white', fontWeight: 'bold' }} component={RouterLink} color='primary' to='/login'>
-                                                Login
-                                            </Button>
 
-                                            <Button sx={{ backgroundColor: kGreenColor, color: 'white', fontWeight: 'bold', '&:hover': { backgroundColor: kGreenColor, } }} component={RouterLink} color='primary' to='/register'>
-                                                Register
-                                            </Button>
-                                        </>
-                                    }
 
                                 </>
                             ) : (
@@ -299,7 +324,7 @@ export default function Navbar() {
                                 </>
                             )}
                         </>
-                    </Box>
+                    </Grid>
                 </Drawer>
 
                 <div>{cncmLogo}</div>
