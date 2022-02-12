@@ -1,23 +1,27 @@
 import moment from "moment"
 import { Divider, Grid, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
+import { useContext } from "react"
+import { BlogContext } from "../contexts/blogcontext"
 
 const SuggestedCard = ({ blog }) => {
+    const [selectedBlog, setSelectedBlog] = useContext(BlogContext)
     const navigate = useNavigate()
     return (<div onClick={() => {
-        navigate(`/blogs/${blog.id}`)
+        setSelectedBlog(blog)
+        navigate('/blogs-wp')
     }} >
-        <Grid container sx={{mb:2, cursor : 'pointer'}}>
+        <Grid container sx={{ mb: 2, cursor: 'pointer' }}>
             <Grid container alignItems='center'>
                 <Grid item sx={{ mx: 1 }}>
-                    <Typography sx={{ fontSize: 13, color: '#444', fontWeight: 'bold' }} >{blog.blogger}</Typography>
+                    <Typography sx={{ fontSize: 13, color: '#444', fontWeight: 'bold' }} >{blog.author_name}</Typography>
                 </Grid>
                 <Grid item>
-                    <Typography sx={{ fontSize: 11, color: '#444' }} >{moment(blog.createdAt.toDate()).fromNow()}</Typography>
+                    <Typography sx={{ fontSize: 11, color: '#444' }} >{moment(blog.date).fromNow()}</Typography>
                 </Grid>
             </Grid>
 
-            <Typography sx={{ fontSize: 14, color: '#444', fontWeight: 'bold', m: 1 }}>{blog.title}</Typography>
+            <Typography sx={{ fontSize: 14, color: '#444', fontWeight: 'bold', m: 1 }}>{blog.title.rendered}</Typography>
             <Divider />
 
         </Grid>

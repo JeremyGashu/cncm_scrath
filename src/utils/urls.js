@@ -1,0 +1,1 @@
+export const BASE_URL = 'https://ride8294.2f-capital.com/wp-json/wp/v2';
