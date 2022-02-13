@@ -5,13 +5,21 @@ import { Box, Typography } from '@mui/material'
 import moment from 'moment'
 import parse from 'html-react-parser'
 import Navbar from '../components/NavBar'
-import { fetchComments } from '../controllers/wordpress/posts'
+import { addComments, fetchComments, getAuthorName, getImageUrl } from '../controllers/wordpress/posts'
 import { useState } from 'react'
+import { useAuth } from '../hooks/auth'
 
 const BloggerDetailWordpress = () => {
 
     const theme = useTheme()
     const query = useMediaQuery(theme.breakpoints.down(700))
+    const [commentText, setCommentText] = useState('')
+    const { user, active } = useAuth()
+
+    const [image, setImage] = useState()
+    const [author, setAuthor] = useState()
+
+
     const [comments, setComments] = useState()
     const [selectedBlog, setSelectedBlog] = useContext(BlogContext)
     useEffect(() => {
@@ -19,18 +27,32 @@ const BloggerDetailWordpress = () => {
             fetchComments(selectedBlog.id).then(res => {
                 setComments(res)
             })
+            getImageUrl(selectedBlog.featured_media).then(res => {
+                setImage(res)
+            })
+            getAuthorName(selectedBlog.author).then(res => {
+                setAuthor(res)
+            })
         }
         return () => {
 
         }
     }, [selectedBlog])
 
+    const handleComment = async ({ post, author_name, author_email, content }) => {
+        const success = await addComments({ post, author_name, author_email, content })
+        fetchComments(selectedBlog.id).then(res => {
+            setComments(res)
+        })
+        setCommentText('')
+    }
+
     return (
         <Typography>
             <Navbar />
             {selectedBlog && <Box sx={{ px: query ? 2 : 20, mt: 2 }}>
                 <Typography sx={{ mb: 2, color: '#444' }} variant='h3' >{selectedBlog.title.rendered}</Typography>
-                <Typography>{selectedBlog.author_name}</Typography>
+                <Typography>{author}</Typography>
                 <Typography sx={{ fontSize: 11 }}>{moment(selectedBlog.date).fromNow()}</Typography>
             </Box>}
 
@@ -39,8 +61,8 @@ const BloggerDetailWordpress = () => {
             }
 
             {selectedBlog && <>
-                <Box sx={{ px: query ? 2 : 20, ml: query ? 5 : 0 }}>
-                    <img alt='Cover' style={{ padding: 20 }} src={selectedBlog.image_url} />
+                <Box sx={{ px: query ? 2 : 20 }}>
+                    <img alt='Cover' style={{ padding: 20 }} src={image} />
                 </Box>
             </>}
             {selectedBlog &&
@@ -62,15 +84,18 @@ const BloggerDetailWordpress = () => {
                             <InputLabel htmlFor="standard-adornment-amount">Comment...</InputLabel>
                             <Input
                                 id="standard-adornment-amount"
-                                // value={commentText}
+                                value={commentText}
                                 onChange={(e) => {
-                                    // setCommentText(e.target.value)
+                                    setCommentText(e.target.value)
                                 }}
                             />
                         </FormControl>
                     </Grid>
 
-                    <Button variant='text'>Comment</Button>
+                    <Button onClick={() => {
+                        console.log();
+                        handleComment({ post: selectedBlog.id, author_name: user.displayName || 'Anonymous', content: commentText, author_email: user.email || "" });
+                    }} variant='text'>Comment</Button>
                 </Grid>
             </Box>}
 

@@ -1,25 +1,41 @@
 import { Typography, Grid, Avatar, Button, Divider } from '@mui/material'
 import parse from 'html-react-parser'
 import moment from 'moment'
-import { useContext } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { useContext, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { BlogContext } from '../contexts/blogcontext'
+import { getAuthorName, getImageUrl } from '../controllers/wordpress/posts'
 
 const BlogCardWordpress = ({ blog }) => {
-    const navigate = useNavigate()  
+
+    const [image, setImage] = useState()
+    const [author, setAuthor] = useState()
+
+    useEffect(() => {
+
+        getImageUrl(blog.featured_media).then(res => {
+            setImage(res)
+        })
+        getAuthorName(blog.author).then(res => {
+            setAuthor(res)
+        })
+        return () => {
+
+        }
+    }, [])
+    const navigate = useNavigate()
     const [selectedBlog, setSelectedBlog] = useContext(BlogContext)
-
-
 
     return (
         <Grid container alignItems='center'>
-            <Grid item sm={12} lg={8} sx={{ p: 5 }}>
+            <Grid item sm={12} lg={8} sx={{ p: 3 }}>
                 <Grid container direction='row' alignItems='center'>
                     <Grid item>
                         <Avatar src={blog.bloggerImage} />
                     </Grid>
                     <Grid item >
-                        <Typography sx={{ fontSize: 12, color: '#444', px: 1 }}>{blog.author_name}</Typography>
+                        <Typography sx={{ fontSize: 12, color: '#444', px: 1 }}>{author}</Typography>
                     </Grid>
                     <Grid item>
                         <Typography sx={{ fontSize: 10, color: '#444444', px: 1 }}>{moment(blog.date).fromNow()}</Typography>
@@ -44,8 +60,8 @@ const BlogCardWordpress = ({ blog }) => {
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid sx={{pl:5}} item sm={12} lg={4}>
-                <img style={{ borderRadius: 5 }} height={100} src={blog.image_url} alt='Blog' />
+            <Grid sx={{ pl: 3 }} item sm={12} lg={4}>
+                <img style={{ borderRadius: 5 }} height={150} src={image} alt='Blog' />
             </Grid>
             <Grid item sm={12} lg={12} md={12} >
                 <Divider />

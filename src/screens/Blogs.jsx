@@ -2,10 +2,7 @@ import { Box, Divider, Grid, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import { useEffect } from 'react'
 import Navbar from '../components/NavBar'
-import { collectionData } from 'rxfire/firestore'
-import { publishedBlogsQuery } from '../query/query'
 import FullPageLoading from '../components/FullPageLoading'
-import BlogCard from '../components/BlogCard'
 import { kGreenColor } from '../styles/colors'
 import SuggestedCard from '../components/SuggestedCard'
 import { fetchPosts, getAuthorName, getImageUrl } from '../controllers/wordpress/posts'
@@ -18,14 +15,11 @@ const BlogsPage = () => {
 
     const [blogs, setBlogs] = useState()
     const [loading, setLoading] = useState(false)
-    const authors = {}
-    const images = {}
 
     useEffect(() => {
 
         setLoading(true)
         fetchPosts().then(result => {
-            console.log(result)
             setBlogs(result)
             setLoading(false)
         })
@@ -40,23 +34,9 @@ const BlogsPage = () => {
             {loading && <FullPageLoading />}
 
             <Grid container alignItems='start'>
-                <Grid item sm={12} lg={8} sx={{ p: 5 }}>
+                <Grid item sm={12} lg={8} sx={{ p: 1 }}>
 
                     {!loading && blogs && blogs.map((blog, index, _) => {
-
-                        getImageUrl(blog.featured_media).then(res => {
-                            blog.image_url = res
-
-                            setBlogs(
-                                [...blogs.slice(0, index), blog, ...blogs.slice(index + 1)]
-                            )
-                        })
-                        getAuthorName(blog.author).then(res => {
-                            blog.author_name = res
-                            setBlogs(
-                                [...blogs.slice(0, index), blog, ...blogs.slice(index + 1)]
-                            )
-                        })
                         return (
                             <BlogCardWordpress blog={blog} />
                         )
