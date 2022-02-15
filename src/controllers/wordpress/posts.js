@@ -27,9 +27,9 @@ export const addComments = async ({ post, author_name, author_email, content }) 
 
 }
 
-export const getImageUrl = async (id) => {
+export const getImageUrl = async (id, large = false) => {
     const mediaResult = await axios.get(`${BASE_URL}/media/${id}`)
-    return mediaResult.data.media_details.sizes.medium.source_url
+    return large ? mediaResult.data.guid.rendered : mediaResult.data.media_details.sizes.medium.source_url
 }
 
 export const getAuthorName = async (id) => {

@@ -30,11 +30,11 @@ const HowWeGotStarted = () => {
             </Grid>
 
             <Grid container sx={{ position: 'relative', bottom: '200px', m: 3, p: 3 }} justifyContent='center' alignItems='center'>
-                <Grid item lg={2}  sx={{  my: 2 }}>
-                    <img style={{ width : 100}} src={cncm_white} alt='Logo'/>
+                <Grid item lg={2} sx={{ my: 2 }}>
+                    <img style={{ width: 100 }} src={cncm_white} alt='Logo' />
                 </Grid>
 
-                <Grid item lg={6}  sx={{ px: 5 }}>
+                <Grid item lg={6} sx={{ px: 5 }}>
                     <Typography sx={{ color: '#1DEF55', fontSize: 24, fontWeight: 'bold' }}>HOW WE STARTED</Typography>
                     <Typography sx={{ color: '#6B6B6B', fontSize: 37, fontWeight: 'bold' }}>How We Got CNCM here?</Typography>
                     <Typography sx={{ color: '#FFFFFF', fontSize: 16 }}>CNCM's mission is to be the focal point for education and advocacy of copyright and neighboring rights, to provide a community for those working in this segment of industries.</Typography>
@@ -42,7 +42,7 @@ const HowWeGotStarted = () => {
                     <Typography sx={{ color: '#FFFFFF', fontSize: 16, mt: 3 }}>Although the Rome Treaty has enabled neighbouring and related rights to be a source of income for performers living in any country that has been a signatory since 1961, this income stream has always played second fiddle to copyright owners (labels)</Typography>
                 </Grid>
 
-                <Grid item lg={3}  sx={{ px: 5, mt: 2 }} >
+                <Grid item lg={3} sx={{ px: 5, mt: 2 }} >
                     <Typography sx={{ fontSize: 40, fontWeight: 'bold', color: 'white' }}>16 <span style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>Individuals</span> </Typography>
                     <Typography sx={{ fontSize: 16, fontWeight: 'bold', color: '#1DEF55', mb: 1 }} >LEGAL FIRM MEMBERS</Typography>
 

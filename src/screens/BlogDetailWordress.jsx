@@ -14,6 +14,7 @@ const BloggerDetailWordpress = () => {
     const theme = useTheme()
     const query = useMediaQuery(theme.breakpoints.down(700))
     const [commentText, setCommentText] = useState('')
+    const [sendingComment, setSendingComment] = useState(false)
     const { user, active } = useAuth()
 
     const [image, setImage] = useState()
@@ -27,7 +28,7 @@ const BloggerDetailWordpress = () => {
             fetchComments(selectedBlog.id).then(res => {
                 setComments(res)
             })
-            getImageUrl(selectedBlog.featured_media).then(res => {
+            getImageUrl(selectedBlog.featured_media, true).then(res => {
                 setImage(res)
             })
             getAuthorName(selectedBlog.author).then(res => {
@@ -40,10 +41,12 @@ const BloggerDetailWordpress = () => {
     }, [selectedBlog])
 
     const handleComment = async ({ post, author_name, author_email, content }) => {
+        setSendingComment(true)
         const success = await addComments({ post, author_name, author_email, content })
         fetchComments(selectedBlog.id).then(res => {
             setComments(res)
         })
+        setSendingComment(false)
         setCommentText('')
     }
 
@@ -92,9 +95,8 @@ const BloggerDetailWordpress = () => {
                         </FormControl>
                     </Grid>
 
-                    <Button onClick={() => {
-                        console.log();
-                        handleComment({ post: selectedBlog.id, author_name: user.displayName || 'Anonymous', content: commentText, author_email: user.email || "" });
+                    <Button disabled={sendingComment} onClick={() => {
+                        handleComment({ post: selectedBlog.id, author_name: user.name || 'Anonymous', content: commentText, author_email: user.email || "" });
                     }} variant='text'>Comment</Button>
                 </Grid>
             </Box>}

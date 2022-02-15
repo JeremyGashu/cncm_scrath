@@ -1,4 +1,4 @@
-import { Typography, Grid, Avatar, Button, Divider } from '@mui/material'
+import { Typography, Grid, Avatar, Button, Divider, useTheme, useMediaQuery } from '@mui/material'
 import parse from 'html-react-parser'
 import moment from 'moment'
 import { useState } from 'react'
@@ -8,6 +8,9 @@ import { BlogContext } from '../contexts/blogcontext'
 import { getAuthorName, getImageUrl } from '../controllers/wordpress/posts'
 
 const BlogCardWordpress = ({ blog }) => {
+
+    const theme = useTheme()
+    const query = useMediaQuery(theme.breakpoints.down(700))
 
     const [image, setImage] = useState()
     const [author, setAuthor] = useState()
@@ -61,7 +64,7 @@ const BlogCardWordpress = ({ blog }) => {
                 </Grid>
             </Grid>
             <Grid sx={{ pl: 3 }} item sm={12} lg={4}>
-                <img style={{ borderRadius: 5 }} height={150} src={image} alt='Blog' />
+                <img style={{ borderRadius: 5, }} height={query ? 200 : 150} src={image} alt='Blog' />
             </Grid>
             <Grid item sm={12} lg={12} md={12} >
                 <Divider />

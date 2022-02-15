@@ -46,7 +46,7 @@ const BlogsPage = () => {
                 {!loading && blogs && <Grid item sm={12} lg={3} sx={{ p: 5 }}>
                     <Box sx={{ p: 2, backgroundColor: '#f5f5f5', borderRadius: 1 }} >
                         <Typography sx={{ fontWeight: 'bold', fontSize: 17, color: kGreenColor, m: 1 }} >Suggestion</Typography>
-                        <Divider />
+                        {/* <Divider /> */}
 
                         {blogs.map((blog) => {
                             return (

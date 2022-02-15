@@ -24,11 +24,12 @@ const SuggestedCard = ({ blog }) => {
 
         }
     }, [selectedBlog])
-    return (<div onClick={() => {
+    return (<div style={{marginBottom : 20}} onClick={() => {
         setSelectedBlog(blog)
         navigate('/blogs-wp')
     }} >
-        <Grid container sx={{ mb: 4, cursor: 'pointer' }}>
+
+        <Grid container sx={{cursor: 'pointer' }}>
             <Grid container alignItems='center'>
                 <Grid item sx={{ mx: 1 }}>
                     <Typography sx={{ fontSize: 13, color: '#444', fontWeight: 'bold' }} >{author}</Typography>
@@ -39,9 +40,10 @@ const SuggestedCard = ({ blog }) => {
             </Grid>
 
             <Typography sx={{ fontSize: 14, color: '#444', fontWeight: 'bold', m: 1 }}>{blog.title.rendered}</Typography>
-            <Divider />
+            
 
         </Grid>
+        <Divider color='white' />
     </div>)
 }
 
