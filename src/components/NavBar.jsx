@@ -77,15 +77,28 @@ export default function Navbar() {
             }}>
                 {cncmLogo}
                 <Box>
-                    {currentRole !== 'admin' && ordinarySettings.map((setting) => (
+                    {currentRole !== 'admin' && <>
                         <Button onClick={() => {
-                            navigate('#owrWorks')
+                            document.querySelector('#ourWorks').scrollIntoView({ behavior: 'smooth' })
                         }} sx={{ color: "black" }}>
-                            {setting}
+                            Our Works
                         </Button>
-
-
-                    ))}
+                        <Button onClick={() => {
+                            document.querySelector('#solutions').scrollIntoView({ behavior: 'smooth' })
+                        }} sx={{ color: "black" }}>
+                            Solution
+                        </Button>
+                        <Button onClick={() => {
+                            document.querySelector('#becomePartner').scrollIntoView({ behavior: 'smooth' })
+                        }} sx={{ color: "black" }}>
+                            Become Partner
+                        </Button>
+                        <Button onClick={() => {
+                            navigate('/blogs')
+                        }} sx={{ color: "black" }}>
+                            Blogs
+                        </Button>
+                    </>}
                 </Box>
 
                 <Box>
@@ -223,13 +236,36 @@ export default function Navbar() {
 
                         ))}
 
-                        {currentRole !== 'admin' && ordinarySettings.map((setting) => (
+                        {currentRole !== 'admin' && <>
                             <Grid item>
-                                <Button sx={{ color: "black", }}>
-                                    {setting}
+                                <Button onClick={() => {
+                                    document.querySelector('#ourWorks').scrollIntoView({ behavior: 'smooth' })
+                                }} sx={{ color: "black" }}>
+                                    Our Works
                                 </Button>
                             </Grid>
-                        ))}
+                            <Grid item>
+                                <Button onClick={() => {
+                                    document.querySelector('#solutions').scrollIntoView({ behavior: 'smooth' })
+                                }} sx={{ color: "black" }}>
+                                    Solution
+                                </Button>
+                            </Grid>
+                            <Grid item>
+                                <Button onClick={() => {
+                                    document.querySelector('#becomePartner').scrollIntoView({ behavior: 'smooth' })
+                                }} sx={{ color: "black" }}>
+                                    Become Partner
+                                </Button>
+                            </Grid>
+                            <Grid item>
+                                <Button onClick={() => {
+                                    navigate('/blogs')
+                                }} sx={{ color: "black" }}>
+                                    Blogs
+                                </Button>
+                            </Grid>
+                        </>}
                         <Grid item>
                             {
                                 (currentRole === 'admin' || currentRole === 'blogger' || currentRole === 'user') &&

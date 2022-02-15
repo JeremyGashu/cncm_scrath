@@ -4,7 +4,7 @@ import blog_image from '../assets/blogs_image.png'
 
 const ReadBlogs = () => {
     const navigate = useNavigate()
-    return (<Grid container alignItems='center' justifyContent='space-between' sx={{ textAlign: "center", p: 6, backgroundColor: '#f5f5f5' }}>
+    return (<Grid id='blogs' container alignItems='center' justifyContent='space-between' sx={{ textAlign: "center", p: 6, backgroundColor: '#f5f5f5' }}>
         <Grid item lg={5} sx={{pl:1}}>
 
             <img style={{ maxHeight: 450 }} src={blog_image} alt="" />

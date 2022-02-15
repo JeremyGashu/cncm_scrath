@@ -4,7 +4,7 @@ import '../styles/search_bar.css'
 
 const SolutionsAndPackages = () => {
     return (
-        <Box sx={{ backgroundColor: 'black', p: 5, }}>
+        <Box id='solutions' sx={{ backgroundColor: 'black', p: 5, }}>
             <Grid container justifyContent='center' alignItems='center' gap={2}>
                 <Grid item lg={4} md={4} sx={{ p:2, m: 2 }}>
                     <Typography sx={{ fontSize: 37, fontWeight: 'bold', color: '#1DEF55' }}>Solutions &amp; Packages</Typography>

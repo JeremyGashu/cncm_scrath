@@ -14,7 +14,7 @@ import { useState } from "react"
 const OurWorks = () => {
     const [selectedButton, setSelecteButton] = useState(0)
     return (
-        <Box id='owrWorks'>
+        <Box id='ourWorks'>
             <Grid container sx={{ px: 10, py: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} justifyContent='space-between' alignItems='center'>
                 <Grid item>
                     <Typography sx={{ color: 'black', fontSize: 30, fontWeight: 'bold' }}>OUR WORKS</Typography>
