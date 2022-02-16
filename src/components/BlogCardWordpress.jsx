@@ -58,7 +58,7 @@ const BlogCardWordpress = ({ blog }) => {
                     <Grid item sx={{ px: 1 }}>
                         <Button onClick={() => {
                             setSelectedBlog(blog)
-                            navigate('/blogs-wp')
+                            navigate(`/blogs-wp/${blog.slug}`)
                         }} sx={{ fontSize: 11, color: '#444' }}> Read More... </Button>
                     </Grid>
                 </Grid>

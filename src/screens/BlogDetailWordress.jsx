@@ -1,49 +1,59 @@
 import { Avatar, Button, Divider, FormControl, Grid, Input, InputLabel, Paper, useMediaQuery, useTheme } from '@mui/material'
-import { useContext, useEffect } from 'react'
-import { BlogContext } from '../contexts/blogcontext'
 import { Box, Typography } from '@mui/material'
 import moment from 'moment'
 import parse from 'html-react-parser'
 import Navbar from '../components/NavBar'
-import { addComments, fetchComments, getAuthorName, getImageUrl } from '../controllers/wordpress/posts'
-import { useState } from 'react'
+import { addComments, fetchComments, fetchSinglePost, getAuthorName, getImageUrl } from '../controllers/wordpress/posts'
+import { useEffect, useState } from 'react'
 import { useAuth } from '../hooks/auth'
+import { useParams } from 'react-router-dom'
+import FullPageLoading from '../components/FullPageLoading'
 
 const BloggerDetailWordpress = () => {
+
+    const { slug } = useParams()
 
     const theme = useTheme()
     const query = useMediaQuery(theme.breakpoints.down(700))
     const [commentText, setCommentText] = useState('')
+    const [blog, setBlog] = useState()
     const [sendingComment, setSendingComment] = useState(false)
-    const { user, active } = useAuth()
-
+    const [loadingBlog, setLoadingBlog] = useState(false)
+    const { user } = useAuth()
     const [image, setImage] = useState()
     const [author, setAuthor] = useState()
 
-
     const [comments, setComments] = useState()
-    const [selectedBlog, setSelectedBlog] = useContext(BlogContext)
     useEffect(() => {
-        if (selectedBlog) {
-            fetchComments(selectedBlog.id).then(res => {
-                setComments(res)
+        setLoadingBlog(true)
+        fetchSinglePost(slug).then(postRes => {
+            console.log(postRes)
+            setBlog(postRes)
+            fetchComments(postRes.id).then(commentRes => {
+                setComments(commentRes)
             })
-            getImageUrl(selectedBlog.featured_media, true).then(res => {
-                setImage(res)
+            getImageUrl(postRes.featured_media, true).then(imageRes => {
+                setImage(imageRes)
             })
-            getAuthorName(selectedBlog.author).then(res => {
-                setAuthor(res)
+            getAuthorName(postRes.author).then(authorRes => {
+                setAuthor(authorRes)
             })
-        }
+
+            setLoadingBlog(false)
+        }).catch(err => {
+            setLoadingBlog(false)
+        })
+        // setLoadingBlog(false)
+
         return () => {
 
         }
-    }, [selectedBlog])
+    }, [slug])
 
     const handleComment = async ({ post, author_name, author_email, content }) => {
         setSendingComment(true)
-        const success = await addComments({ post, author_name, author_email, content })
-        fetchComments(selectedBlog.id).then(res => {
+        await addComments({ post, author_name, author_email, content })
+        fetchComments(blog.id).then(res => {
             setComments(res)
         })
         setSendingComment(false)
@@ -53,34 +63,37 @@ const BloggerDetailWordpress = () => {
     return (
         <Typography>
             <Navbar />
-            {selectedBlog && <Box sx={{ px: query ? 2 : 20, mt: 2 }}>
-                <Typography sx={{ mb: 2, color: '#444' }} variant='h3' >{selectedBlog.title.rendered}</Typography>
+            {
+                loadingBlog && <FullPageLoading />
+            }
+            {blog && !loadingBlog && <Box sx={{ px: query ? 2 : 20, mt: 2 }}>
+                <Typography sx={{ mb: 2, color: '#444' }} variant='h4' >{blog.title.rendered}</Typography>
                 <Typography>{author}</Typography>
-                <Typography sx={{ fontSize: 11 }}>{moment(selectedBlog.date).fromNow()}</Typography>
+                <Typography sx={{ fontSize: 11 }}>{moment(blog.date).fromNow()}</Typography>
             </Box>}
 
             {
-                selectedBlog && <Box sx={{ m: 5 }} ><Divider /></Box>
+                blog && !loadingBlog && <Box sx={{ m: 5 }} ><Divider /></Box>
             }
 
-            {selectedBlog && <>
+            {blog && !loadingBlog && <>
                 <Box sx={{ px: query ? 2 : 20 }}>
                     <img alt='Cover' style={{ padding: 20 }} src={image} />
                 </Box>
             </>}
-            {selectedBlog &&
-                <Box sx={{ mx: 5 }}>
+            {blog && !loadingBlog &&
+                <Box sx={{ px: query ? 2 : 20 }}>
                     {
-                        parse(selectedBlog.content.rendered)
+                        parse(blog.content.rendered)
                     }
                 </Box>
             }
 
             {
-                selectedBlog && <Box sx={{ m: 5 }} ><Divider /></Box>
+                blog && <Box sx={{ m: 5 }} ><Divider /></Box>
             }
 
-            {selectedBlog && <Box sx={{ px: query ? 2 : 20, py: 2 }} >
+            {blog && !loadingBlog && <Box sx={{ px: query ? 2 : 20, py: 2 }} >
                 <Grid container gap={3}>
                     <Grid item md={10} sm={10} lg={10}>
                         <FormControl fullWidth sx={{ m: 1 }} variant="standard">
@@ -96,13 +109,13 @@ const BloggerDetailWordpress = () => {
                     </Grid>
 
                     <Button disabled={sendingComment} onClick={() => {
-                        handleComment({ post: selectedBlog.id, author_name: user.name || 'Anonymous', content: commentText, author_email: user.email || "" });
+                        handleComment({ post: blog.id, author_name: user.name || 'Anonymous', content: commentText, author_email: user.email || "" });
                     }} variant='text'>Comment</Button>
                 </Grid>
             </Box>}
 
             {
-                selectedBlog && comments &&
+                blog && !loadingBlog && comments &&
                 comments.map(comment => {
                     return (
                         <Paper sx={{ px: query ? 2 : 20, mb: 2 }}>
@@ -137,9 +150,6 @@ const BloggerDetailWordpress = () => {
     // return (
     // <p>Example Example</p>
     {/* 
-
-            
-
             {!loadingBlog && blog && <Box sx={{ px: query ? 2 : 20, py: 1 }}><Typography variant='h4' >Comments</Typography></Box>}
 
             {(!loadingBlog && !loading && blog) && <Box sx={{ px: query ? 2 : 20, py: 2 }} >

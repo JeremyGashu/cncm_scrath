@@ -28,7 +28,7 @@ function App() {
             <Route path='blogs' element={<BlogsPage />} />
 
             <Route path='blogs/:id' element={<BloggerDetail />} />
-            <Route path='/blogs-wp' element={<BloggerDetailWordpress />} />
+            <Route path='/blogs-wp/:slug' element={<BloggerDetailWordpress />} />
             <Route path='login' element={<LoginPage />} />
             <Route path='register' element={<SignUpPage />} />
 

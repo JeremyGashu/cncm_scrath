@@ -15,13 +15,13 @@ const OurPartners = () => {
                     <img width={100} height={100} src={nahom} alt='Nahom' />
                 </Grid>
                 <Grid item>
-                    <img width={100} height={100} src={sewasew} alt='Nahom' />
+                    <img width={100} height={100} src={sewasew} alt='Sewasew' />
                 </Grid>
                 <Grid item>
-                    <img width={100} height={100} src={twof} alt='Nahom' />
+                    <img width={100} height={100} src={twof} alt='twof times PLC' />
                 </Grid>
                 <Grid item>
-                    <img width={100} height={100} src={omni} alt='Nahom' />
+                    <img width={100} height={100} src={omni} alt='Omni' />
                 </Grid>
                 <Grid item>
                     <img width={100} height={100} src={sewasew} alt='Nahom' />

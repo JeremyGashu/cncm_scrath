@@ -43,19 +43,10 @@ export default function Navbar() {
         { name: "Bloggers", to: "/admin/bloggers", icon: <CreateOutlined /> },
     ];
 
-    const ordinarySettings = ['OUR WORK', 'SOLUTION', 'BECOME PARTNER', 'BLOGS'];
 
     useEffect(() => {
-        // if(user) {
-        //     console.log('user id', user.uid)
-        // }
-        // if(user) {
-        //     collectionData(query(database, 'notofications'), where('to', '==', user.uid)).subscribe(val => {
-        //         console.log(val)
-        //     })
-        // }
         const setResponsiveness = () => {
-            return window.innerWidth < 900
+            return window.innerWidth < 800
                 ? setState((prevState) => ({ ...prevState, mobileView: true }))
                 : setState((prevState) => ({ ...prevState, mobileView: false }));
         };

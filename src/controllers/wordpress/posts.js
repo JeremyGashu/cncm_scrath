@@ -6,6 +6,11 @@ export const fetchPosts = async () => {
     return result.data
 }
 
+export const fetchSinglePost = async (slug) => {
+    const result = await axios.get(`${BASE_URL}/posts?slug=${slug}`)
+    return result.data[0]
+}
+
 export const fetchComments = async (id) => {
     const result = await axios.get(`${BASE_URL}/comments?post=${id}`)
     return result.data
